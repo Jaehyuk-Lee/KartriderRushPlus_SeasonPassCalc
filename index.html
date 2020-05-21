@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1" />
     <title>카트라이더 시즌 패스 계산기</title>
     <style>
         .inputDesc > span {
             display: inline-block;
             width: 200px;
-            text-align: right;
+            text-align: center;
         }
         .button {
             background-color: rgb(190, 190, 190);
@@ -19,8 +20,14 @@
         .underline {
             text-decoration: underline;
         }
-        h2#plan {
-            margin-top: 400px;
+        .red {
+            color: red;
+        }
+        .display-none {
+            display: none;
+        }
+        .bold {
+            font-weight: bold;
         }
     </style>
     <script>
@@ -29,23 +36,58 @@
                 object.value = object.value.slice(0, object.maxLength);
             }
         }
+        function toggleWeeklyQuest(object){
+            if (object.checked)
+                document.getElementById("weeklyQuest").classList.remove('display-none');
+            else 
+                document.getElementById("weeklyQuest").classList.add('display-none');
+        }
         function findRemainingDates(){
-            return (new Date('2020-07-22T23:59:00') - new Date()) / 1000 / 60 / 60 / 24;
+            return Math.floor((new Date('2020-07-16T23:59:00') - new Date()) / 1000 / 60 / 60 / 24);
         }
         function calculate(){
-            if(!document.getElementById("targetLevel").value || !document.getElementById("yourPoint")) {
+            if (!document.getElementById("targetLevel").value || !document.getElementById("yourPoint").value) {
                 alert("항목을 모두 입력하세요.");
                 return;
             }
+
+            let b_RoyalPass = document.getElementById("royalPass").checked;
+
+            // toggle royalPass information
+            for (let i=0; i<document.getElementsByClassName("royal").length; i++){
+                if (b_RoyalPass)
+                    document.getElementsByClassName("royal")[i].classList.remove('display-none');
+                else 
+                    document.getElementsByClassName("royal")[i].classList.add('display-none');
+            }
+
             let remainingDate = findRemainingDates();
             let targetLevel = document.getElementById("targetLevel").value;
             let yourPoint = document.getElementById("yourPoint").value;
 
             let needPoint = (targetLevel - 1) * 100 - yourPoint;
             document.getElementById("needPoint").innerText = needPoint;
-            document.getElementById("needPointPerDay").innerText = Math.round(needPoint / remainingDate);
-            // let dayDivider = document.getElementById("royalPass").checked ? 195 : 180;
-            // document.getElementById("needPoint").innerText = needPoint / dayDivider;
+            document.getElementById("needPointPerDay").innerText = Math.ceil(needPoint / remainingDate);
+
+            let dayDivider = b_RoyalPass ? 195 : 180;
+            let clearedWeekly = document.getElementById("clearedWeeklyQuest").value || 0;
+            let needDay = Math.ceil(needPoint / dayDivider);
+            let needDay_clearWeekly = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / dayDivider);
+
+            document.getElementById("needDay").innerText = needDay;
+            document.getElementById("needDay-clearWeekly").innerText = needDay_clearWeekly;
+            document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / remainingDate);
+            let possibleLevel;
+            if (b_RoyalPass) 
+                possibleLevel = (remainingDate * dayDivider + parseInt(yourPoint) + (9 - clearedWeekly) * 750) / 100 + 1;
+            else 
+                possibleLevel = (remainingDate * dayDivider + parseInt(yourPoint)) / 100 + 1;
+            document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
+            
+            if (b_RoyalPass && needDay_clearWeekly < remainingDate || !b_RoyalPass && needDay < remainingDate)
+                document.getElementById("possibleOrNot").innerText = "목표 달성이 가능합니다.";
+            else
+                document.getElementById("possibleOrNot").innerText = "모든 퀘스트를 매일 완료해도 목표를 달성할 수 없습니다.";
         }
     </script>
 </head>
@@ -53,27 +95,29 @@
     <h1>카트라이더 시즌 패스 계산기</h1>
 
     <h2>시즌1</h2>
-    <b>시즌1 기간: 2020.05.12 ~ 2020.07.22</b><br>
+    <b>시즌1 기간: 2020.05.12 ~ 2020.07.16</b><br>
     <b>남은 날짜: <span id="remainDate">일</span></b>(<span class="underline">오늘 제외</span>)<br>
-    <!-- <div class="inputDesc"><span>로얄패스 구매 여부:</span><input type="checkbox" id="royalPass"></div> -->
-    <div class="inputDesc"><span>현재 나의 시즌 포인트:</span> <input type="number" id="yourPoint" maxlength="5" min="0" max="19900" oninput="maxLengthCheck(this)"></div>
-    <div class="inputDesc"><span>목표 레벨:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200" oninput="maxLengthCheck(this)"></div>
+    <div class="inputDesc"><span>로얄패스 구매 여부:</span><input type="checkbox" id="royalPass" onchange="toggleWeeklyQuest(this)"></div>
+    <div class="inputDesc display-none" id="weeklyQuest"><span>도전퀘스트 완료 주 (0-9):</span> <input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">주</div>
+    <div class="inputDesc"><span>현재 나의 시즌 포인트:</span> <input type="number" id="yourPoint" maxlength="5" min="0" max="19900" oninput="maxLengthCheck(this)">포인트</div>
+    <div class="inputDesc"><span>목표 레벨:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200" oninput="maxLengthCheck(this)">레벨</div>
     <div class="button" onclick="calculate()">계산하기</div>
+    <h4>아래 모든 계산은 오늘을 제외합니다.</h4>
     <div>필요한 포인트: <span id="needPoint">0</span>포인트</div>
+    <div>일일퀘스트 풀보상 요구 날짜: <span id="needDay">0</span>일</div>
     <div>1일당 획득해야 할 포인트: <span id="needPointPerDay">0</span>포인트</div>
+    <div class="display-none royal">도전퀘스트 모두 완료시 일일퀘스트 풀보상 요구 날짜: <span id="needDay-clearWeekly">0</span>일</div>
+    <div class="display-none royal">도전퀘스트 모두 완료시 1일당 획득해야 할 포인트: <span id="needPointPerDay-clearWeekly">0</span>포인트</div>
+    <div class="bold red" id="possibleOrNot">목표 달성이 가능합니다.</div>
+    <div>이론상 가능한 최대 레벨: <span id="possibleLevel">0</span>레벨</div>
 
     <h2>패스 기본 상식</h2>
-    로얄패스 일일퀘스트 풀보상: 195포인트<br>
     무료패스 일일퀘스트 풀보상: 180포인트<br>
+    로얄패스 일일퀘스트 풀보상: 195포인트<br>
     로얄패스 도전퀘스트 풀보상: 매주 750포인트
-
-    <h2 id="plan">계산기 변경 예정 사항</h2>
-    <b>* 로얄패스 도전퀘스트 계산도 포함시킬 예정</b><br>
-    * 디자인 개선<br>
-    * 빨리 만드느라 대충 기능만 하게 만들었습니다.
 </body>
 
 <script>
-    document.getElementById("remainDate").innerText = Math.floor(findRemainingDates()) + "일";
+    document.getElementById("remainDate").innerText = findRemainingDates() + "일";
 </script>
 </html>
