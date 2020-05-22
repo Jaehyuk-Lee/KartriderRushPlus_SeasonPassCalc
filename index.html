@@ -71,10 +71,11 @@
             }
 
             let remainingDate = findRemainingDates();
-            let targetLevel = document.getElementById("targetLevel").value;
-            let yourPoint = document.getElementById("yourPoint").value;
+            let targetLevel = parseInt(document.getElementById("targetLevel").value);
+            let yourPoint = parseInt(document.getElementById("yourPoint").value);
+            let paidLevel = parseInt(document.getElementById("paidLevel").value);
 
-            let needPoint = (targetLevel - 1) * 100 - yourPoint;
+            let needPoint = (targetLevel - paidLevel - 1) * 100 - yourPoint;
             document.getElementById("needPoint").innerText = needPoint;
             document.getElementById("needPointPerDay").innerText = Math.ceil(needPoint / remainingDate);
 
@@ -91,9 +92,9 @@
             document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / remainingDate);
             let possibleLevel;
             if (b_RoyalPass)
-                possibleLevel = (remainingDate * dayDivider + parseInt(yourPoint) + (9 - clearedWeekly) * 750) / 100 + 1;
+                possibleLevel = (remainingDate * dayDivider + yourPoint + (9 - clearedWeekly) * 750) / 100 + 1 + paidLevel;
             else
-                possibleLevel = (remainingDate * dayDivider + parseInt(yourPoint)) / 100 + 1;
+                possibleLevel = (remainingDate * dayDivider + yourPoint) / 100 + 1 + paidLevel;
             document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
 
             if (b_RoyalPass && needDay_clearWeekly < remainingDate || !b_RoyalPass && needDay < remainingDate)
@@ -117,6 +118,8 @@
             id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">주</div>
     <div class="inputDesc"><span>현재 나의 시즌 포인트:</span> <input type="number" id="yourPoint" maxlength="5" min="0"
             max="19900" oninput="maxLengthCheck(this)">포인트</div>
+    <div class="inputDesc"><span>유료로 구매한 레벨:</span> <input type="number" id="paidLevel" maxlength="3" min="0"
+            max="200" oninput="maxLengthCheck(this)" value="0">레벨</div>
     <div class="inputDesc"><span>목표 레벨:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200"
             oninput="maxLengthCheck(this)">레벨</div>
     <div class="button" onclick="calculate()">계산하기</div>
