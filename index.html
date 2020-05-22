@@ -70,6 +70,9 @@
             document.getElementById("needPointPerDay").innerText = Math.ceil(needPoint / remainingDate);
 
             let dayDivider = b_RoyalPass ? 195 : 180;
+            if (document.getElementById('noFriend').checked) {
+                dayDivider -= b_RoyalPass ? 11 : 10;
+            }
             let clearedWeekly = document.getElementById("clearedWeeklyQuest").value || 0;
             let needDay = Math.ceil(needPoint / dayDivider);
             let needDay_clearWeekly = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / dayDivider);
@@ -97,6 +100,7 @@
     <h2>시즌1</h2>
     <b>시즌1 기간: 2020.05.12 ~ 2020.07.16</b><br>
     <b>남은 날짜: <span id="remainDate">일</span></b>(<span class="underline">오늘 제외</span>)<br>
+    <div class="inputDesc"><span>당신은 친없찐입니까?</span><input type="checkbox" id="noFriend"></div>
     <div class="inputDesc"><span>로얄패스 구매 여부:</span><input type="checkbox" id="royalPass" onchange="toggleWeeklyQuest(this)"></div>
     <div class="inputDesc display-none" id="weeklyQuest"><span>도전퀘스트 완료 주 (0-9):</span> <input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">주</div>
     <div class="inputDesc"><span>현재 나의 시즌 포인트:</span> <input type="number" id="yourPoint" maxlength="5" min="0" max="19900" oninput="maxLengthCheck(this)">포인트</div>
