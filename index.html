@@ -71,9 +71,9 @@
             }
 
             let remainingDate = findRemainingDates();
-            let targetLevel = parseInt(document.getElementById("targetLevel").value);
-            let yourPoint = parseInt(document.getElementById("yourPoint").value);
-            let paidLevel = parseInt(document.getElementById("paidLevel").value);
+            let targetLevel = parseInt(document.getElementById("targetLevel").value || 0);
+            let yourPoint = parseInt(document.getElementById("yourPoint").value || 0);
+            let paidLevel = parseInt(document.getElementById("paidLevel").value || 0);
 
             let needPoint = (targetLevel - paidLevel - 1) * 100 - yourPoint;
             document.getElementById("needPoint").innerText = needPoint;
@@ -83,7 +83,7 @@
             if (document.getElementById('noFriend').checked) {
                 dayDivider -= b_RoyalPass ? 11 : 10;
             }
-            let clearedWeekly = document.getElementById("clearedWeeklyQuest").value || 0;
+            let clearedWeekly = parseInt(document.getElementById("clearedWeeklyQuest").value || 0);
             let needDay = Math.ceil(needPoint / dayDivider);
             let needDay_clearWeekly = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / dayDivider);
 
