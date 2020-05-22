@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1" />
     <title>카트라이더 시즌 패스 계산기</title>
     <style>
-        .inputDesc > span {
+        .inputDesc>span {
             display: inline-block;
             width: 200px;
             text-align: center;
         }
+
         .button {
             background-color: rgb(190, 190, 190);
             border: black 1px solid;
@@ -17,35 +19,42 @@
             display: inline-block;
             cursor: pointer;
         }
+
         .underline {
             text-decoration: underline;
         }
+
         .red {
             color: red;
         }
+
         .display-none {
             display: none;
         }
+
         .bold {
             font-weight: bold;
         }
     </style>
     <script>
-        function maxLengthCheck(object){
-            if (object.value.length > object.maxLength){
+        function maxLengthCheck(object) {
+            if (object.value.length > object.maxLength) {
                 object.value = object.value.slice(0, object.maxLength);
             }
         }
-        function toggleWeeklyQuest(object){
+
+        function toggleWeeklyQuest(object) {
             if (object.checked)
                 document.getElementById("weeklyQuest").classList.remove('display-none');
-            else 
+            else
                 document.getElementById("weeklyQuest").classList.add('display-none');
         }
-        function findRemainingDates(){
+
+        function findRemainingDates() {
             return Math.floor((new Date('2020-07-16T23:59:00') - new Date()) / 1000 / 60 / 60 / 24);
         }
-        function calculate(){
+
+        function calculate() {
             if (!document.getElementById("targetLevel").value || !document.getElementById("yourPoint").value) {
                 alert("항목을 모두 입력하세요.");
                 return;
@@ -54,10 +63,10 @@
             let b_RoyalPass = document.getElementById("royalPass").checked;
 
             // toggle royalPass information
-            for (let i=0; i<document.getElementsByClassName("royal").length; i++){
+            for (let i = 0; i < document.getElementsByClassName("royal").length; i++) {
                 if (b_RoyalPass)
                     document.getElementsByClassName("royal")[i].classList.remove('display-none');
-                else 
+                else
                     document.getElementsByClassName("royal")[i].classList.add('display-none');
             }
 
@@ -81,12 +90,12 @@
             document.getElementById("needDay-clearWeekly").innerText = needDay_clearWeekly;
             document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / remainingDate);
             let possibleLevel;
-            if (b_RoyalPass) 
+            if (b_RoyalPass)
                 possibleLevel = (remainingDate * dayDivider + parseInt(yourPoint) + (9 - clearedWeekly) * 750) / 100 + 1;
-            else 
+            else
                 possibleLevel = (remainingDate * dayDivider + parseInt(yourPoint)) / 100 + 1;
             document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
-            
+
             if (b_RoyalPass && needDay_clearWeekly < remainingDate || !b_RoyalPass && needDay < remainingDate)
                 document.getElementById("possibleOrNot").innerText = "목표 달성이 가능합니다.";
             else
@@ -94,6 +103,7 @@
         }
     </script>
 </head>
+
 <body>
     <h1>카트라이더 시즌 패스 계산기</h1>
 
@@ -101,17 +111,22 @@
     <b>시즌1 기간: 2020.05.12 ~ 2020.07.16</b><br>
     <b>남은 날짜: <span id="remainDate">일</span></b>(<span class="underline">오늘 제외</span>)<br>
     <div class="inputDesc"><span>당신은 친없찐입니까?</span><input type="checkbox" id="noFriend"></div>
-    <div class="inputDesc"><span>로얄패스 구매 여부:</span><input type="checkbox" id="royalPass" onchange="toggleWeeklyQuest(this)"></div>
-    <div class="inputDesc display-none" id="weeklyQuest"><span>도전퀘스트 완료 주 (0-9):</span> <input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">주</div>
-    <div class="inputDesc"><span>현재 나의 시즌 포인트:</span> <input type="number" id="yourPoint" maxlength="5" min="0" max="19900" oninput="maxLengthCheck(this)">포인트</div>
-    <div class="inputDesc"><span>목표 레벨:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200" oninput="maxLengthCheck(this)">레벨</div>
+    <div class="inputDesc"><span>로얄패스 구매 여부:</span><input type="checkbox" id="royalPass"
+            onchange="toggleWeeklyQuest(this)"></div>
+    <div class="inputDesc display-none" id="weeklyQuest"><span>도전퀘스트 완료 주 (0-9):</span> <input type="number"
+            id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">주</div>
+    <div class="inputDesc"><span>현재 나의 시즌 포인트:</span> <input type="number" id="yourPoint" maxlength="5" min="0"
+            max="19900" oninput="maxLengthCheck(this)">포인트</div>
+    <div class="inputDesc"><span>목표 레벨:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200"
+            oninput="maxLengthCheck(this)">레벨</div>
     <div class="button" onclick="calculate()">계산하기</div>
     <h4>아래 모든 계산은 오늘을 제외합니다.</h4>
     <div>필요한 포인트: <span id="needPoint">0</span>포인트</div>
     <div>일일퀘스트 풀보상 요구 날짜: <span id="needDay">0</span>일</div>
     <div>1일당 획득해야 할 포인트: <span id="needPointPerDay">0</span>포인트</div>
     <div class="display-none royal">도전퀘스트 모두 완료시 일일퀘스트 풀보상 요구 날짜: <span id="needDay-clearWeekly">0</span>일</div>
-    <div class="display-none royal">도전퀘스트 모두 완료시 1일당 획득해야 할 포인트: <span id="needPointPerDay-clearWeekly">0</span>포인트</div>
+    <div class="display-none royal">도전퀘스트 모두 완료시 1일당 획득해야 할 포인트: <span id="needPointPerDay-clearWeekly">0</span>포인트
+    </div>
     <div class="bold red" id="possibleOrNot">목표 달성이 가능합니다.</div>
     <div>이론상 가능한 최대 레벨: <span id="possibleLevel">0</span>레벨</div>
 
@@ -124,4 +139,5 @@
 <script>
     document.getElementById("remainDate").innerText = findRemainingDates() + "일";
 </script>
+
 </html>
