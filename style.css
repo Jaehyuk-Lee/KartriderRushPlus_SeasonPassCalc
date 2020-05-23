@@ -1,0 +1,33 @@
+.inputDesc>span {
+    display: inline-block;
+    width: 200px;
+    text-align: center;
+}
+
+.button {
+    background-color: rgb(190, 190, 190);
+    border: black 1px solid;
+    padding: 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.red {
+    color: red;
+}
+
+.display-none {
+    display: none;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+footer {
+    margin-top: 3rem;
+}
