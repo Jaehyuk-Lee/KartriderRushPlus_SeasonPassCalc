@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="./style.css">
     <title>Kartrider SeasonPass Calculator</title>
     <script>
+        const season1End = new Date('2020-07-16T23:59:00Z');
+
         function maxLengthCheck(object) {
             if (object.value.length > object.maxLength) {
                 object.value = object.value.slice(0, object.maxLength);
@@ -21,7 +23,14 @@
         }
 
         function findRemainingDates() {
-            return Math.floor((new Date('2020-07-16T23:59:00') - new Date()) / 1000 / 60 / 60 / 24);
+            const timezone = parseInt(document.getElementById("time-zone").value);
+            let baseDate = new Date(season1End.getTime());
+            baseDate.setHours(season1End.getHours() + timezone);
+            return Math.floor((new Date(baseDate) - new Date()) / 1000 / 60 / 60 / 24);
+        }
+
+        function refreshRemainingDates() {
+            document.getElementById("remainDate").innerText = findRemainingDates();
         }
 
         function calculate() {
@@ -81,7 +90,12 @@
 
     <h2>Season 1</h2>
     <b>Season 1: 2020.05.12 ~ 2020.07.16</b><br>
-    <b>Remaining Dates: <span id="remainDate">Days</span></b>(<span class="underline">Except today</span>)<br>
+    <b>Remaining Dates: <span id="remainDate"></span>Days</b>(<span class="underline">Except today</span>)<br>
+    <div class="inputDesc"><span>Server Time: </span>
+        <select id="time-zone" onchange="javascript:refreshRemainingDates()">
+            <option value="-8">NA Server (UTC-8)</option>
+        </select>
+    </div>
     <div class="inputDesc display-none prev-120"><span>Free +10 level?</span><input type="checkbox" id="prev-120"></div>
     <div class="inputDesc"><span>Do you clear friend quest?</span><input type="checkbox" id="noFriend"></div>
     <div class="inputDesc"><span>Did you buy PremiumPass?</span><input type="checkbox" id="royalPass"
@@ -122,7 +136,7 @@
 </footer>
 
 <script>
-    document.getElementById("remainDate").innerText = findRemainingDates() + "Days";
+    refreshRemainingDates();
     if (findRemainingDates() < 0)
         document.getElementsByClassName("prev-120")[0].classList.remove('display-none');
 </script>
