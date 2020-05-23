@@ -4,9 +4,15 @@
     text-align: center;
 }
 
+.language .button {
+    border-radius: 5px;
+    padding: 5px;
+}
+
 .button {
     background-color: rgb(190, 190, 190);
     border: black 1px solid;
+    border-radius: 5px;
     padding: 10px;
     display: inline-block;
     cursor: pointer;

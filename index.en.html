@@ -84,9 +84,9 @@
     <b>Remaining Dates: <span id="remainDate">Days</span></b>(<span class="underline">Except today</span>)<br>
     <div class="inputDesc display-none prev-120"><span>Free +10 level?</span><input type="checkbox" id="prev-120"></div>
     <div class="inputDesc"><span>Do you clear friend quest?</span><input type="checkbox" id="noFriend"></div>
-    <div class="inputDesc"><span>Did you buy RoyalPass?</span><input type="checkbox" id="royalPass"
+    <div class="inputDesc"><span>Did you buy PremiumPass?</span><input type="checkbox" id="royalPass"
             onchange="toggleWeeklyQuest(this)"></div>
-    <div class="inputDesc display-none" id="weeklyQuest"><span>Clear Challenge Week:</span> <input type="number"
+    <div class="inputDesc display-none" id="weeklyQuest"><span>Cleared Challenge Week:</span> <input type="number"
             id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">Weeks (0-9)</div>
     <div class="inputDesc"><span>Your Points:</span> <input type="number" id="yourPoint" maxlength="5" min="0"
             max="19900" oninput="maxLengthCheck(this)">Points</div>
@@ -107,13 +107,16 @@
 
     <h2>Season Pass Basic Facts</h2>
     FreePass Daily Maximum Rewards: 180Points<br>
-    RoyalPass Daily Maximum Rewards: 195Points<br>
-    RoyalPass Challenge Weekly Rewards: 750Points Per Week
+    PremiumPass Daily Maximum Rewards: 195Points<br>
+    PremiumPass Challenge Weekly Rewards: 750Points Per Week
 </body>
 <footer>
+    <p>
+        다른 언어로 보기: <a href="https://jaehyuk-lee.github.io/KartriderRushPlus_SeasonPassCalc/">한국어</a>
+    </p>
     <ul>
         <li>developer email: alex00728@outlook.com</li>
-        <li>Github Repo: <a href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc">
+        <li>Github Repo: <a href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc" target="_blank">
             https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></li>
     </ul>
 </footer>
@@ -122,7 +125,6 @@
     document.getElementById("remainDate").innerText = findRemainingDates() + "Days";
     if (findRemainingDates() < 0)
         document.getElementsByClassName("prev-120")[0].classList.remove('display-none');
-
 </script>
 
 </html>
