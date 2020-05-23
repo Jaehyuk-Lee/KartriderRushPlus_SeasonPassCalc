@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./style.css">
     <title>Kartrider SeasonPass Calculator</title>
     <script>
-        const season1End = new Date('2020-07-16T23:59:00Z');
+        const season1End = new Date('2020-07-16T23:59:59Z');
 
         function maxLengthCheck(object) {
             if (object.value.length > object.maxLength) {
@@ -93,7 +93,8 @@
     <b>Remaining Dates: <span id="remainDate"></span>Days</b>(<span class="underline">Except today</span>)<br>
     <div class="inputDesc"><span>Server Time: </span>
         <select id="time-zone" onchange="javascript:refreshRemainingDates()">
-            <option value="-8">NA Server (UTC-8)</option>
+            <option value="+8">NA Server (UTC-8)</option>
+            <option value="-9">KR Server (UTC+9)</option>
         </select>
     </div>
     <div class="inputDesc display-none prev-120"><span>Free +10 level?</span><input type="checkbox" id="prev-120"></div>
