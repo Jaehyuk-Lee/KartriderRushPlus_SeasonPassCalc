@@ -34,7 +34,7 @@
         }
 
         function calculate() {
-            if (!document.getElementById("targetLevel").value || !document.getElementById("yourPoint").value) {
+            if (!document.getElementById("targetLevel").value || !document.getElementById("remainPoint").value) {
                 alert("Please enter all fields.");
                 return;
             }
@@ -50,12 +50,12 @@
             }
 
             let remainingDate = findRemainingDates();
-            let targetLevel = parseInt(document.getElementById("targetLevel").value || 0);
-            let yourPoint = parseInt(document.getElementById("yourPoint").value || 0);
-            let paidLevel = parseInt(document.getElementById("paidLevel").value || 0);
+            let targetLevel = parseInt(document.getElementById("targetLevel").value || 1);
+            let remainPoint = parseInt(document.getElementById("remainPoint").value || 0);
+            let nowLevel = parseInt(document.getElementById("nowLevel").value || 1);
             let freeLevel = document.getElementById("prev-120").checked ? 10 : 0;
 
-            let needPoint = (targetLevel - freeLevel - paidLevel - 1) * 100 - yourPoint;
+            let needPoint = (targetLevel - freeLevel - nowLevel - 1) * 100 + remainPoint;
             document.getElementById("needPoint").innerText = needPoint;
             document.getElementById("needPointPerDay").innerText = Math.ceil(needPoint / remainingDate);
 
@@ -72,9 +72,9 @@
             document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / remainingDate);
             let possibleLevel;
             if (b_RoyalPass)
-                possibleLevel = (remainingDate * dailyPoint + yourPoint + (9 - clearedWeekly) * 750) / 100 + 1 + paidLevel + freeLevel;
+                possibleLevel = (remainingDate * dailyPoint - remainPoint + (9 - clearedWeekly) * 750) / 100 + 1 + nowLevel + freeLevel;
             else
-                possibleLevel = (remainingDate * dailyPoint + yourPoint) / 100 + 1 + paidLevel + freeLevel;
+                possibleLevel = (remainingDate * dailyPoint - remainPoint) / 100 + 1 + nowLevel + freeLevel;
             document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
 
             if (b_RoyalPass && needDay_clearWeekly < remainingDate || !b_RoyalPass && needDay < remainingDate)
@@ -104,10 +104,10 @@
             onchange="toggleWeeklyQuest(this)"></div>
     <div class="inputDesc display-none" id="weeklyQuest"><span>Cleared Challenge Week:</span> <input type="number"
             id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">Weeks (0-9)</div>
-    <div class="inputDesc"><span>Your Points:</span> <input type="number" id="yourPoint" maxlength="5" min="0"
-            max="19900" oninput="maxLengthCheck(this)">Points</div>
-    <div class="inputDesc"><span>Paid Level:</span> <input type="number" id="paidLevel" maxlength="3" min="0"
-            max="200" oninput="maxLengthCheck(this)" value="0">Level</div>
+    <div class="inputDesc"><span>Your Pass Level:</span> <input type="number" id="nowLevel" maxlength="3" min="1"
+            max="999" oninput="maxLengthCheck(this)" value="1">Level</div>
+    <div class="inputDesc"><span>Points before next level:</span> <input type="number" id="remainPoint" maxlength="2" min="0"
+            max="99" oninput="maxLengthCheck(this)">Points</div>
     <div class="inputDesc"><span>Target Level:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200"
             oninput="maxLengthCheck(this)">Level</div>
     <div class="button" onclick="calculate()">Calculate</div>

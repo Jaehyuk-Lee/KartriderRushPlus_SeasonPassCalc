@@ -25,7 +25,7 @@
         }
 
         function calculate() {
-            if (!document.getElementById("targetLevel").value || !document.getElementById("yourPoint").value) {
+            if (!document.getElementById("targetLevel").value || !document.getElementById("remainPoint").value) {
                 alert("항목을 모두 입력하세요.");
                 return;
             }
@@ -41,12 +41,12 @@
             }
 
             let remainingDate = findRemainingDates();
-            let targetLevel = parseInt(document.getElementById("targetLevel").value || 0);
-            let yourPoint = parseInt(document.getElementById("yourPoint").value || 0);
-            let paidLevel = parseInt(document.getElementById("paidLevel").value || 0);
+            let targetLevel = parseInt(document.getElementById("targetLevel").value || 1);
+            let remainPoint = parseInt(document.getElementById("remainPoint").value || 0);
+            let nowLevel = parseInt(document.getElementById("nowLevel").value || 1);
             let freeLevel = document.getElementById("prev-120").checked ? 10 : 0;
 
-            let needPoint = (targetLevel - freeLevel - paidLevel - 1) * 100 - yourPoint;
+            let needPoint = (targetLevel - freeLevel - nowLevel - 1) * 100 + remainPoint;
             document.getElementById("needPoint").innerText = needPoint;
             document.getElementById("needPointPerDay").innerText = Math.ceil(needPoint / remainingDate);
 
@@ -63,9 +63,9 @@
             document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / remainingDate);
             let possibleLevel;
             if (b_RoyalPass)
-                possibleLevel = (remainingDate * dailyPoint + yourPoint + (9 - clearedWeekly) * 750) / 100 + 1 + paidLevel + freeLevel;
+                possibleLevel = (remainingDate * dailyPoint - remainPoint + (9 - clearedWeekly) * 750) / 100 + 1 + nowLevel + freeLevel;
             else
-                possibleLevel = (remainingDate * dailyPoint + yourPoint) / 100 + 1 + paidLevel + freeLevel;
+                possibleLevel = (remainingDate * dailyPoint - remainPoint) / 100 + 1 + nowLevel + freeLevel;
             document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
 
             if (b_RoyalPass && needDay_clearWeekly < remainingDate || !b_RoyalPass && needDay < remainingDate)
@@ -88,11 +88,11 @@
             onchange="toggleWeeklyQuest(this)"></div>
     <div class="inputDesc display-none" id="weeklyQuest"><span>도전퀘스트 완료 주 (0-9):</span> <input type="number"
             id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">주</div>
-    <div class="inputDesc"><span>현재 나의 시즌 포인트:</span> <input type="number" id="yourPoint" maxlength="5" min="0"
-            max="19900" oninput="maxLengthCheck(this)">포인트</div>
-    <div class="inputDesc"><span>유료로 구매한 레벨:</span> <input type="number" id="paidLevel" maxlength="3" min="0"
-            max="200" oninput="maxLengthCheck(this)" value="0">레벨</div>
-    <div class="inputDesc"><span>목표 레벨:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200"
+    <div class="inputDesc"><span>현재 패스 레벨:</span> <input type="number" id="nowLevel" maxlength="3" min="1"
+            max="999" oninput="maxLengthCheck(this)" value="1">레벨</div>
+    <div class="inputDesc"><span>다음 레벨까지 남은 포인트:</span> <input type="number" id="remainPoint" maxlength="2" min="0"
+            max="99" oninput="maxLengthCheck(this)">포인트</div>
+    <div class="inputDesc"><span>목표 패스 레벨:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200"
             oninput="maxLengthCheck(this)">레벨</div>
     <div class="button" onclick="calculate()">계산하기</div>
     <h4>아래 모든 계산은 오늘을 제외합니다.</h4>
