@@ -142,6 +142,8 @@
     refreshRemainingDates();
     if (findRemainingDates() < 0)
         document.getElementsByClassName("prev-120")[0].classList.remove('display-none');
+    if (season1End < new Date())
+        alert('Season 2 is not yet supported.');
 </script>
 
 </html>
