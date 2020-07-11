@@ -9,14 +9,15 @@
     <script>
         const lang = 'ko';
     </script>
+    <script src="./util.js"></script>
     <script src="./common.js"></script>
 </head>
 
 <body>
     <h1>카트라이더 시즌 패스 계산기</h1>
 
-    <h2>시즌1</h2>
-    <b>시즌패스 기간: 2020.05.12 ~ 2020.07.16</b><br>
+    <h2>시즌<span id="seasonNumber"></span></h2>
+    <b>시즌패스 기간: <span id="passPeriod"></span></b><br>
     <b>남은 날짜: <span id="remainDate"></span>일</b>(<span class="underline">오늘 제외</span>)<br>
     <div class="inputDesc"><span>서버 시간: </span>
         <select id="time-zone" onchange="javascript:refreshRemainingDates()">
@@ -66,9 +67,7 @@
 </footer>
 
 <script>
-    refreshRemainingDates();
-    if (S1_END < new Date())
-        alert('시즌2는 아직 지원하지 않습니다.');
+    initSeasonInformation();
 </script>
 
 </html>

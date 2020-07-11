@@ -9,14 +9,15 @@
     <script>
         const lang = 'en';
     </script>
+    <script src="./util.js"></script>
     <script src="./common.js"></script>
 </head>
 
 <body>
     <h1>Kartrider SeasonPass Calculator</h1>
 
-    <h2>Season 1</h2>
-    <b>Pass Period: 2020.05.12 ~ 2020.07.16</b><br>
+    <h2>Season <span id="seasonNumber"></span></h2>
+    <b>Pass Period: <span id="passPeriod"></span></b><br>
     <b>Remaining Dates: <span id="remainDate"></span>Days</b>(<span class="underline">Except today</span>)<br>
     <div class="inputDesc"><span>Server Time: </span>
         <select id="time-zone" onchange="javascript:refreshRemainingDates()">
@@ -67,9 +68,7 @@
 </footer>
 
 <script>
-    refreshRemainingDates();
-    if (S1_END < new Date())
-        alert('Season 2 is not yet supported.');
+    initSeasonInformation();
 </script>
 
 </html>

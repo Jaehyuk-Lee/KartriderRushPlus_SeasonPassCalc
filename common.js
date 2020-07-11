@@ -1,11 +1,4 @@
-const S1_START = new Date('2020-05-12T00:00:00');
-const S1_END = new Date('2020-07-16T23:59:59Z');
-
-const S2_START = undefined;
-const S2_END = undefined;
-
-
-const localize = {
+const LOCALIZE = {
     enterFields: {
         ko: '항목을 모두 입력하세요.',
         en: 'Please enter all fields.',
@@ -18,12 +11,53 @@ const localize = {
         ko: '목표 달성이 불가능합니다.',
         en: 'Impossible to achieve your goal.',
     },
+    notSupportedYet: {
+        ko: '아직 이번 시즌 대응 업데이트를 하지 않았습니다.',
+        en: 'Not yet updated for latest season pass.',
+    }
 }
 
-function maxLengthCheck(object) {
-    if (object.value.length > object.maxLength) {
-        object.value = object.value.slice(0, object.maxLength);
+const SEASON_DATA = {
+    S1 : {
+        START: new Date('2020-05-12T00:00:00Z'),
+        END: new Date('2020-07-16T23:59:59Z'),
+    },
+    S2 : {
+        START: undefined,
+        END: undefined,
+    },
+
+    // ADD NEW SEASON INFORMATION TO WORK PROPERLY
+}
+
+let nowSeasonNumber = 1; // JUST CHANGE THIS FOR NEW SEASON
+let nowSeason = 'S' + nowSeasonNumber;
+let seasonStart = SEASON_DATA[nowSeason].START;
+let seasonEnd = SEASON_DATA[nowSeason].END;
+
+
+function initSeasonInformation() {
+    document.getElementById("seasonNumber").innerText = nowSeasonNumber;
+    if (seasonEnd < new Date() || seasonEnd == undefined){
+        alert(LOCALIZE.notSupportedYet[lang]);
+        document.getElementById("passPeriod").innerText = '-';
+        document.getElementById("remainDate").innerText = '-';
     }
+    else {
+        document.getElementById("passPeriod").innerText = dateObjToDateStr(seasonStart) + ' ~ ' + dateObjToDateStr(seasonEnd);
+        document.getElementById("remainDate").innerText = findRemainingDates();
+    }
+}
+
+function refreshRemainingDates() {
+    document.getElementById("remainDate").innerText = findRemainingDates();
+}
+
+function findRemainingDates() {
+    const timezone = parseInt(document.getElementById("time-zone").value);
+    let baseDate = new Date(seasonEnd.getTime());
+    baseDate.setHours(seasonEnd.getHours() + timezone);
+    return Math.floor((new Date(baseDate) - new Date()) / 1000 / 60 / 60 / 24);
 }
 
 function toggleWeeklyQuest(object) {
@@ -33,20 +67,9 @@ function toggleWeeklyQuest(object) {
         document.getElementById("weeklyQuest").classList.add('display-none');
 }
 
-function refreshRemainingDates() {
-    document.getElementById("remainDate").innerText = findRemainingDates();
-}
-
-function findRemainingDates() {
-    const timezone = parseInt(document.getElementById("time-zone").value);
-    let baseDate = new Date(S1_END.getTime());
-    baseDate.setHours(S1_END.getHours() + timezone);
-    return Math.floor((new Date(baseDate) - new Date()) / 1000 / 60 / 60 / 24);
-}
-
 function calculate() {
     if (!document.getElementById("targetLevel").value || !document.getElementById("remainPoint").value) {
-        alert(localize.enterFields[lang]);
+        alert(LOCALIZE.enterFields[lang]);
         return;
     }
 
@@ -88,7 +111,7 @@ function calculate() {
     document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
 
     if (b_RoyalPass && needDay_clearWeekly < remainingDate || !b_RoyalPass && needDay < remainingDate)
-        document.getElementById("possibleOrNot").innerText = localize.possibleAchieve[lang];
+        document.getElementById("possibleOrNot").innerText = LOCALIZE.possibleAchieve[lang];
     else
-        document.getElementById("possibleOrNot").innerText = localize.impossibleAchieve[lang];
+        document.getElementById("possibleOrNot").innerText = LOCALIZE.impossibleAchieve[lang];
 }
