@@ -16,7 +16,7 @@
     <h1>카트라이더 시즌 패스 계산기</h1>
 
     <h2>시즌1</h2>
-    <b>시즌1 시즌패스 기간: 2020.05.12 ~ 2020.07.16</b><br>
+    <b>시즌패스 기간: 2020.05.12 ~ 2020.07.16</b><br>
     <b>남은 날짜: <span id="remainDate"></span>일</b>(<span class="underline">오늘 제외</span>)<br>
     <div class="inputDesc"><span>서버 시간: </span>
         <select id="time-zone" onchange="javascript:refreshRemainingDates()">
@@ -26,14 +26,13 @@
             <option value="-8">대만 (UTC+8)</option>
         </select>
     </div>
-    <div class="inputDesc display-none prev-120"><span>이전 시즌 120레벨 달성:</span><input type="checkbox" id="prev-120"></div>
-    <div class="inputDesc"><span>친구퀘스트를 매일 깨나요?</span><input type="checkbox" id="noFriend"></div>
+    <div class="inputDesc"><span>친구퀘스트를 매일 깨나요?</span><input type="checkbox" id="friendQuest"></div>
     <div class="inputDesc"><span>로얄패스 구매 여부:</span><input type="checkbox" id="royalPass"
             onchange="toggleWeeklyQuest(this)"></div>
     <div class="inputDesc display-none" id="weeklyQuest"><span>도전퀘스트 완료 주 (0-9):</span> <input type="number"
             id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">주</div>
-    <div class="inputDesc"><span>현재 패스 레벨:</span> <input type="number" id="nowLevel" maxlength="3" min="1"
-            max="999" oninput="maxLengthCheck(this)" value="1">레벨</div>
+    <div class="inputDesc"><span>현재 패스 레벨:</span> <input type="number" id="nowLevel" maxlength="3" min="1" max="999"
+            oninput="maxLengthCheck(this)" value="1">레벨</div>
     <div class="inputDesc"><span>다음 레벨까지 남은 포인트:</span> <input type="number" id="remainPoint" maxlength="3" min="0"
             max="100" oninput="maxLengthCheck(this)">포인트</div>
     <div class="inputDesc"><span>목표 패스 레벨:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200"
@@ -56,19 +55,18 @@
 </body>
 <footer>
     <p>
-        View in other Language: <a href="https://jaehyuk-lee.github.io/KartriderRushPlus_SeasonPassCalc/index.en">English</a>
+        View in other Language: <a
+            href="https://jaehyuk-lee.github.io/KartriderRushPlus_SeasonPassCalc/index.en">English</a>
     </p>
     <ul>
         <li>개발자 email: alex00728@outlook.com</li>
         <li>Github Repo: <a href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc" target="_blank">
-            https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></li>
+                https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></li>
     </ul>
 </footer>
 
 <script>
-    document.getElementById("remainDate").innerText = findRemainingDates();
-    if (findRemainingDates() < 0)
-        document.getElementsByClassName("prev-120")[0].classList.remove('display-none');
+    refreshRemainingDates();
     if (S1_END < new Date())
         alert('시즌2는 아직 지원하지 않습니다.');
 </script>

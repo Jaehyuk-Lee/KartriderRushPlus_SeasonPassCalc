@@ -64,14 +64,13 @@ function calculate() {
     let targetLevel = parseInt(document.getElementById("targetLevel").value || 1);
     let remainPoint = parseInt(document.getElementById("remainPoint").value || 0);
     let nowLevel = parseInt(document.getElementById("nowLevel").value || 1);
-    let freeLevel = document.getElementById("prev-120").checked ? 10 : 0;
 
-    let needPoint = (targetLevel - freeLevel - nowLevel - 1) * 100 + remainPoint;
+    let needPoint = (targetLevel - nowLevel - 1) * 100 + remainPoint;
     document.getElementById("needPoint").innerText = needPoint;
     document.getElementById("needPointPerDay").innerText = Math.ceil(needPoint / remainingDate);
 
     let dailyPoint = b_RoyalPass ? 195 : 180;
-    if (!document.getElementById('noFriend').checked) {
+    if (!document.getElementById('friendQuest').checked) {
         dailyPoint -= b_RoyalPass ? 11 : 10;
     }
     let clearedWeekly = parseInt(document.getElementById("clearedWeeklyQuest").value || 0);
@@ -83,9 +82,9 @@ function calculate() {
     document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / remainingDate);
     let possibleLevel;
     if (b_RoyalPass)
-        possibleLevel = (remainingDate * dailyPoint - remainPoint + (9 - clearedWeekly) * 750) / 100 + 1 + nowLevel + freeLevel;
+        possibleLevel = (remainingDate * dailyPoint - remainPoint + (9 - clearedWeekly) * 750) / 100 + 1 + nowLevel;
     else
-        possibleLevel = (remainingDate * dailyPoint - remainPoint) / 100 + 1 + nowLevel + freeLevel;
+        possibleLevel = (remainingDate * dailyPoint - remainPoint) / 100 + 1 + nowLevel;
     document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
 
     if (b_RoyalPass && needDay_clearWeekly < remainingDate || !b_RoyalPass && needDay < remainingDate)
