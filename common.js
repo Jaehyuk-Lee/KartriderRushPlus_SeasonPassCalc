@@ -30,7 +30,15 @@ const SEASON_DATA = {
     // ADD NEW SEASON INFORMATION TO WORK PROPERLY
 }
 
-let nowSeasonNumber = 1; // JUST CHANGE THIS FOR NEW SEASON
+
+// autometically check season number by comparing present time and SEASON_DATA
+let nowSeasonNumber;
+for (const [key, value] of Object.entries(SEASON_DATA)) {
+    nowSeasonNumber = key.substr(1, 1);
+    if (value.START == undefined || value.END == undefined || value.END > new Date())
+        break;
+}
+
 let nowSeason = 'S' + nowSeasonNumber;
 let seasonStart = SEASON_DATA[nowSeason].START;
 let seasonEnd = SEASON_DATA[nowSeason].END;
