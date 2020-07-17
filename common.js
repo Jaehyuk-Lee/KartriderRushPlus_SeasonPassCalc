@@ -18,11 +18,11 @@ const LOCALIZE = {
 }
 
 const SEASON_DATA = {
-    S1 : {
+    S1: {
         START: new Date('2020-05-12T00:00:00Z'),
         END: new Date('2020-07-16T23:59:59Z'),
     },
-    S2 : {
+    S2: {
         START: undefined,
         END: undefined,
     },
@@ -30,28 +30,28 @@ const SEASON_DATA = {
     // ADD NEW SEASON INFORMATION TO WORK PROPERLY
 }
 
-
-// autometically check season number by comparing present time and SEASON_DATA
-let nowSeasonNumber;
-for (const [key, value] of Object.entries(SEASON_DATA)) {
-    nowSeasonNumber = key.substr(1, 1);
-    if (value.START == undefined || value.END == undefined || value.END > new Date())
-        break;
-}
-
-let nowSeason = 'S' + nowSeasonNumber;
-let seasonStart = SEASON_DATA[nowSeason].START;
-let seasonEnd = SEASON_DATA[nowSeason].END;
-
+let nowSeasonNumber, nowSeason, seasonStart, seasonEnd;
 
 function initSeasonInformation() {
+    // autometically check season number by comparing present time and SEASON_DATA
+    const serverTimeDiff = parseInt(document.getElementById("time-zone").value) * 60 * 60 * 1000;
+    for (const [key, value] of Object.entries(SEASON_DATA)) {
+        if (value.START == undefined || value.END == undefined || value.END.getTime() + serverTimeDiff > new Date().getTime()) {
+            nowSeasonNumber = key.substr(1, 1);
+            break;
+        }
+    }
+
+    nowSeason = 'S' + nowSeasonNumber;
+    seasonStart = SEASON_DATA[nowSeason].START;
+    seasonEnd = SEASON_DATA[nowSeason].END;
+
     document.getElementById("seasonNumber").innerText = nowSeasonNumber;
-    if (seasonEnd < new Date() || seasonEnd == undefined){
-        alert(LOCALIZE.notSupportedYet[lang]);
+    if (seasonEnd + serverTimeDiff < new Date() || seasonEnd == undefined) {
         document.getElementById("passPeriod").innerText = '-';
         document.getElementById("remainDate").innerText = '-';
-    }
-    else {
+        alert(LOCALIZE.notSupportedYet[lang]);
+    } else {
         document.getElementById("passPeriod").innerText = dateObjToDateStr(seasonStart) + ' ~ ' + dateObjToDateStr(seasonEnd);
         document.getElementById("remainDate").innerText = findRemainingDates();
     }
@@ -62,6 +62,10 @@ function refreshRemainingDates() {
 }
 
 function findRemainingDates() {
+    if (!seasonEnd) {
+        alert(LOCALIZE.notSupportedYet[lang]);
+        return '-';
+    }
     const timezone = parseInt(document.getElementById("time-zone").value);
     let baseDate = new Date(seasonEnd.getTime());
     baseDate.setHours(seasonEnd.getHours() + timezone);
