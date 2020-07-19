@@ -57,20 +57,12 @@ function initSeasonInformation() {
     if (seasonEnd == undefined || seasonEnd.getTime() + serverTimeDiff < new Date().getTime()) {
         document.getElementById("passPeriod").innerText = '-';
         document.getElementById("remainDate").innerText = '-';
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: LOCALIZE.notSupportedYet[lang],
-        });
+        errorAlert(LOCALIZE.notSupportedYet[lang]);
     } else {
         document.getElementById("passPeriod").innerText = dateObjToDateStr(seasonStart) + ' ~ ' + dateObjToDateStr(seasonEnd);
         document.getElementById("remainDate").innerText = findRemainingDates();
         if (seasonStart.getTime() + serverTimeDiff > new Date().getTime())
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: LOCALIZE.notStartedYet[lang],
-            });
+            errorAlert(LOCALIZE.notStartedYet[lang]);
     }
 }
 
@@ -80,11 +72,7 @@ function refreshRemainingDates() {
 
 function findRemainingDates() {
     if (!seasonEnd) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: LOCALIZE.notSupportedYet[lang],
-        });
+        errorAlert(LOCALIZE.notSupportedYet[lang]);
         return '-';
     }
     const timezone = parseInt(document.getElementById("time-zone").value);
@@ -102,11 +90,7 @@ function toggleWeeklyQuest(object) {
 
 function calculate() {
     if (!document.getElementById("targetLevel").value || !document.getElementById("remainPoint").value) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: LOCALIZE.enterFields[lang],
-        });
+        errorAlert(LOCALIZE.enterFields[lang]);
         return;
     }
 

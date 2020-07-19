@@ -4,6 +4,14 @@ function maxLengthCheck(object) {
     }
 }
 
-function dateObjToDateStr(date){
+function dateObjToDateStr(date) {
     return date.toISOString().substr(0, 10).replace(/-/g, '.');
+}
+
+function errorAlert(text) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: text,
+    });
 }
