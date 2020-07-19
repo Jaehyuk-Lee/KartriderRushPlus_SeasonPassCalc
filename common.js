@@ -14,6 +14,10 @@ const LOCALIZE = {
     notSupportedYet: {
         ko: '아직 이번 시즌 대응 업데이트를 하지 않았습니다.',
         en: 'Not yet updated for latest season pass.',
+    },
+    notStartedYet: {
+        ko: '아직 이번 시즌 패스 기간이 아닙니다.',
+        en: 'Pass period not yet started.',
     }
 }
 
@@ -23,6 +27,10 @@ const SEASON_DATA = {
         END: new Date('2020-07-16T23:59:59Z'),
     },
     S2: {
+        START: new Date('2020-07-29T00:00:00Z'),
+        END: undefined,
+    },
+    S3: {
         START: undefined,
         END: undefined,
     },
@@ -36,24 +44,33 @@ function initSeasonInformation() {
     // autometically check season number by comparing present time and SEASON_DATA
     const serverTimeDiff = parseInt(document.getElementById("time-zone").value) * 60 * 60 * 1000;
     for (const [key, value] of Object.entries(SEASON_DATA)) {
-        if (value.START == undefined || value.END == undefined || value.END.getTime() + serverTimeDiff > new Date().getTime()) {
-            nowSeasonNumber = key.substr(1, 1);
+        nowSeason = key;
+        if (value.START == undefined || value.END == undefined || value.END.getTime() + serverTimeDiff > new Date().getTime())
             break;
-        }
     }
 
-    nowSeason = 'S' + nowSeasonNumber;
+    nowSeasonNumber = nowSeason.substr(1, 1);
     seasonStart = SEASON_DATA[nowSeason].START;
     seasonEnd = SEASON_DATA[nowSeason].END;
 
     document.getElementById("seasonNumber").innerText = nowSeasonNumber;
-    if (seasonEnd + serverTimeDiff < new Date() || seasonEnd == undefined) {
+    if (seasonEnd == undefined || seasonEnd.getTime() + serverTimeDiff < new Date().getTime()) {
         document.getElementById("passPeriod").innerText = '-';
         document.getElementById("remainDate").innerText = '-';
-        alert(LOCALIZE.notSupportedYet[lang]);
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: LOCALIZE.notSupportedYet[lang],
+        });
     } else {
         document.getElementById("passPeriod").innerText = dateObjToDateStr(seasonStart) + ' ~ ' + dateObjToDateStr(seasonEnd);
         document.getElementById("remainDate").innerText = findRemainingDates();
+        if (seasonStart.getTime() + serverTimeDiff > new Date().getTime())
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: LOCALIZE.notStartedYet[lang],
+            });
     }
 }
 
@@ -63,7 +80,11 @@ function refreshRemainingDates() {
 
 function findRemainingDates() {
     if (!seasonEnd) {
-        alert(LOCALIZE.notSupportedYet[lang]);
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: LOCALIZE.notSupportedYet[lang],
+        });
         return '-';
     }
     const timezone = parseInt(document.getElementById("time-zone").value);
@@ -81,7 +102,11 @@ function toggleWeeklyQuest(object) {
 
 function calculate() {
     if (!document.getElementById("targetLevel").value || !document.getElementById("remainPoint").value) {
-        alert(LOCALIZE.enterFields[lang]);
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: LOCALIZE.enterFields[lang],
+        });
         return;
     }
 
