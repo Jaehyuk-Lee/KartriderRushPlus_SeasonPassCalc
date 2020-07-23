@@ -13,6 +13,8 @@
     font-size: 20px;
 }
 
+/* Button */
+
 .button {
     display: inline-block;
     *display: inline;
@@ -87,7 +89,7 @@
     margin: 5px;
 }
 
-/* link */
+/* Link */
 
 a {
     font-family: 'Roboto Condensed', sans-serif;

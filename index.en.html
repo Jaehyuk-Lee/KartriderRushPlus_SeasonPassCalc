@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <h1>Kartrider SeasonPass Calculator</h1>
+    <h1>Kartrider Pass Calculator</h1>
 
     <h2>Season <span id="seasonNumber"></span></h2>
     <b>Pass Period: <span id="passPeriod"></span></b><br>
@@ -29,8 +29,8 @@
             <option value="-9">KR (UTC+9)</option>
         </select>
     </div>
-    <div class="inputDesc"><span>Do you clear friend quest?</span><input type="checkbox" id="friendQuest"></div>
-    <div class="inputDesc"><span>Did you buy PremiumPass?</span><input type="checkbox" id="royalPass"
+    <div class="inputDesc"><span>Clear daily friend quest?</span><input type="checkbox" id="friendQuest"></div>
+    <div class="inputDesc"><span>Bought PremiumPass?</span><input type="checkbox" id="royalPass"
             onchange="toggleWeeklyQuest(this)"></div>
     <div class="inputDesc display-none" id="weeklyQuest"><span>Cleared Challenge Week:</span> <input type="number"
             id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">Weeks (0-9)</div>
@@ -56,7 +56,7 @@
     <h2>Season Pass Basic Facts</h2>
     FreePass Daily Maximum Rewards: 180Points<br>
     PremiumPass Daily Maximum Rewards: 195Points<br>
-    PremiumPass Challenge Weekly Rewards: 750Points Per Week
+    PremiumPass Challenge Rewards: 750Points/Week
 </body>
 <footer>
     <p>
