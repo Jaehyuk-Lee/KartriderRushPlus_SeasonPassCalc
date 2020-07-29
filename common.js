@@ -119,14 +119,14 @@ function calculate() {
     }
     let clearedWeekly = parseInt(document.getElementById("clearedWeeklyQuest").value || 0);
     let needDay = Math.ceil(needPoint / dailyPoint);
-    let needDay_clearWeekly = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / dailyPoint);
+    let needDay_clearWeekly = Math.ceil((needPoint - (9 - clearedWeekly) * 800) / dailyPoint);
 
     document.getElementById("needDay").innerText = needDay;
     document.getElementById("needDay-clearWeekly").innerText = needDay_clearWeekly;
-    document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * 750) / remainingDate);
+    document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * 800) / remainingDate);
     let possibleLevel;
     if (b_RoyalPass)
-        possibleLevel = (remainingDate * dailyPoint - remainPoint + (9 - clearedWeekly) * 750) / 100 + 1 + nowLevel;
+        possibleLevel = (remainingDate * dailyPoint - remainPoint + (9 - clearedWeekly) * 800) / 100 + 1 + nowLevel;
     else
         possibleLevel = (remainingDate * dailyPoint - remainPoint) / 100 + 1 + nowLevel;
     document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
