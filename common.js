@@ -2,22 +2,27 @@ const LOCALIZE = {
     enterFields: {
         ko: '항목을 모두 입력하세요.',
         en: 'Please enter all fields.',
+        zh_TW: '請輸入所有項目。',
     },
     possibleAchieve: {
         ko: '목표 달성이 가능합니다.',
         en: 'Possible to achieve your goal.',
+        zh_TW: '您可以實現自己的目標。',
     },
     impossibleAchieve: {
         ko: '목표 달성이 불가능합니다.',
         en: 'Impossible to achieve your goal.',
+        zh_TW: '無法實現目標。',
     },
     notSupportedYet: {
         ko: '아직 이번 시즌 대응 업데이트를 하지 않았습니다.',
         en: 'Not yet updated for latest season pass.',
+        zh_TW: '尚未更新。',
     },
     notStartedYet: {
         ko: '아직 이번 시즌 패스 기간이 아닙니다.',
         en: 'Pass period not yet started.',
+        zh_TW: '通行證術語還沒開始。',
     }
 }
 
