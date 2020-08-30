@@ -136,7 +136,7 @@ function calculate() {
         possibleLevel = (remainingDate * dailyPoint - remainPoint) / 100 + 1 + nowLevel;
     document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
 
-    if (b_RoyalPass && needDay_clearWeekly < remainingDate || !b_RoyalPass && needDay < remainingDate)
+    if (targetLevel <= possibleLevel)
         document.getElementById("possibleOrNot").innerText = LOCALIZE.possibleAchieve[lang];
     else
         document.getElementById("possibleOrNot").innerText = LOCALIZE.impossibleAchieve[lang];
