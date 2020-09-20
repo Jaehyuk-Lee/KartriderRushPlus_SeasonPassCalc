@@ -22,10 +22,10 @@
     <b>通行證術語：<span id="passPeriod"></span></b><br>
     <b>剩餘日期：<span id="remainDate"></span>天</b>（<span class="underline">今天已排除</span>）<br>
     <div class="inputDesc"><span>服務器時間：</span>
-        <select id="time-zone" onchange="javascript:refreshRemainingDates()">
+        <select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
             <option value="-8">台灣（UTC+8）</option>
             <option value="-8">東南亞（UTC+8）</option>
-            <option value="+7">北美（UTC-8）</option>
+            <option value="7">北美（UTC-8）</option>
             <option value="-9">韓國（UTC+9）</option>
         </select>
     </div>

@@ -22,8 +22,8 @@
     <b>Pass Period: <span id="passPeriod"></span></b><br>
     <b>Remaining Dates: <span id="remainDate"></span>Days</b>(<span class="underline">Except today</span>)<br>
     <div class="inputDesc"><span>Server Time: </span>
-        <select id="time-zone" onchange="javascript:refreshRemainingDates()">
-            <option value="+7">West (UTC-8)</option>
+        <select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
+            <option value="7">West (UTC-8)</option>
             <option value="-8">SEA (UTC+8)</option>
             <option value="-8">East Asia (UTC+8)</option>
             <option value="-9">KR (UTC+9)</option>

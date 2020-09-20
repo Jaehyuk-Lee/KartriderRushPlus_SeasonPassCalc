@@ -22,9 +22,9 @@
     <b>시즌패스 기간: <span id="passPeriod"></span></b><br>
     <b>남은 날짜: <span id="remainDate"></span>일</b>(<span class="underline">오늘 제외</span>)<br>
     <div class="inputDesc"><span>서버 시간: </span>
-        <select id="time-zone" onchange="javascript:refreshRemainingDates()">
+        <select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
             <option value="-9">한국 (UTC+9)</option>
-            <option value="+7">북미 (UTC-8)</option>
+            <option value="7">북미 (UTC-8)</option>
             <option value="-8">동남아 (UTC+8)</option>
             <option value="-8">대만 (UTC+8)</option>
         </select>

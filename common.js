@@ -51,6 +51,11 @@ let nowSeasonNumber, nowSeason, seasonStart, seasonEnd;
 
 function initSeasonInformation() {
     // autometically check season number by comparing present time and SEASON_DATA
+
+    const serverTimeCookie = getCookie("server-time");
+    if (serverTimeCookie !== null) {
+        document.getElementById("time-zone").value = serverTimeCookie;
+    }
     const serverTimeDiff = parseInt(document.getElementById("time-zone").value) * 60 * 60 * 1000;
     for (const [key, value] of Object.entries(SEASON_DATA)) {
         nowSeason = key;
@@ -75,8 +80,9 @@ function initSeasonInformation() {
     }
 }
 
-function refreshRemainingDates() {
+function refreshRemainingDates(serverTime) {
     document.getElementById("remainDate").innerText = findRemainingDates();
+    setCookie("server-time", serverTime, 60);
 }
 
 function findRemainingDates() {
