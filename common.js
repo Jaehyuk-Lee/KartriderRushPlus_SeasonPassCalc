@@ -44,8 +44,8 @@ const SEASON_DATA = {
         END: new Date('2021-01-17T23:59:59Z'),
     },
     S5: {
-        START: undefined,
-        END: undefined,
+        START: new Date('2021-01-18T00:00:00Z'),
+        END: new Date('2021-03-21T23:59:59Z'),
     },
 
     // ADD NEW SEASON INFORMATION TO WORK PROPERLY
