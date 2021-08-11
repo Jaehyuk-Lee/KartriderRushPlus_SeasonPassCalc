@@ -154,9 +154,6 @@ function calculate() {
     document.getElementById("needPointPerDay").innerText = Math.ceil(needPoint / remainingDate);
 
     let dailyPoint = b_RoyalPass ? 195 : 180;
-    // if (!document.getElementById('friendQuest').checked) {
-    //     dailyPoint -= b_RoyalPass ? 11 : 10;
-    // }
     let clearedWeekly = parseInt(document.getElementById("clearedWeeklyQuest").value || 0);
     let needDay = Math.ceil(needPoint / dailyPoint);
     let needDay_clearWeekly = Math.ceil((needPoint - (9 - clearedWeekly) * 800) / dailyPoint);
