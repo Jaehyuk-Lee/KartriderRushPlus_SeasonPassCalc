@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1" />
+    <link rel="shortcut icon" type="image/jpg" href="./favicon.png" />
+    <link rel="stylesheet" href="./style.css">
+    <title>Kartrider Calculadora de Passe de Temporada</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script>
+        const lang = 'pt';
+    </script>
+    <script src="./util.js"></script>
+    <script src="./common.js"></script>
+</head>
+
+<body>
+    <h1>Kartrider Calculadora de Passe de Temporada</h1>
+
+    <h2>Temporada <span id="seasonNumber"></span></h2>
+    <b>Período do Passe: <span id="passPeriod"></span></b><br>
+    <b>Tempo restante: <span id="remainDate"></span>Dias</b>(<span class="underline">Exceto hoje</span>)<br>
+    <div class="inputDesc"><span>Horário do Servidor: </span>
+        <select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
+            <option value="7">West (UTC-8)</option>
+            <option value="-8">SEA (UTC+8)</option>
+            <option value="-8">East Asia (UTC+8)</option>
+            <option value="-9">KR (UTC+9)</option>
+        </select>
+    </div>
+    <!-- <div class="inputDesc"><span>Clear daily friend quest?</span><input type="checkbox" id="friendQuest"></div> -->
+    <div class="inputDesc"><span>Comprou o Passe de Glória?</span><input type="checkbox" id="royalPass"
+            onchange="toggleWeeklyQuest(this)"></div>
+    <div class="inputDesc display-none" id="weeklyQuest"><span>Challenges Semanais Completos:</span> <input type="number"
+            id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">Weeks (0-9)</div>
+    <div class="inputDesc"><span>Seu Nível no Passe:</span> <input type="number" id="nowLevel" maxlength="3" min="1"
+            max="999" oninput="maxLengthCheck(this)" value="1">Level</div>
+    <div class="inputDesc"><span>Pontos no Nível Atual:</span> <input type="number" id="remainPoint" maxlength="3"
+            min="0" max="100" oninput="maxLengthCheck(this)">Points</div>
+    <div class="inputDesc"><span>Nível Alvo</span> <input type="number" id="targetLevel" maxlength="3" min="1"
+            max="200" oninput="maxLengthCheck(this)">Nível</div>
+    <div class="button large" id="calcButton" onclick="calculate()">Calcular</div>
+    <h4>Os cálculos abaixo não incluem hoje.</h4>
+    <div>Pontos necessários: <span id="needPoint">0</span> Pontos</div>
+    <div>Dias com Recompensas Máximas Diárias: <span id="needDay">0</span> Dias</div>
+    <div>Pontos Necessários Por Dia: <span id="needPointPerDay">0</span> Pontos</div>
+    <div class="display-none royal">Completando Todos os Desafios & Recompensas Máximas Diárias: <span
+            id="needDay-clearWeekly">0</span> Dias Para Concluir</div>
+    <div class="display-none royal">Completando Todos os Desafios, serão Necessários: <span
+            id="needPointPerDay-clearWeekly">0</span> Pontos Por Dia
+    </div>
+    <div class="bold red" id="possibleOrNot">É possível atingir seu objetivo.</div>
+    <div>Nível Máximo (Teoricamente): <span id="possibleLevel">0</span> Level</div>
+
+    <h2>Fatos Básicos do Passe de Temporada</h2>
+    Recompensa Máxima Diária com o Passe Grátis: 180 Pontos<br>
+    Recompensa Máxima Diária com o Passe de Glória: 195 Pontos<br>
+    Recompensa dos Challenges com o Passe de Glória: 800 Pontos/Semana
+</body>
+<footer>
+    <p>
+        <img src="./resources/LanguageIcon-Big.jpg" id="language-icon">
+        <span class="link-effect"><a id="lang-ko"
+                href="https://jaehyuk-lee.github.io/KartriderRushPlus_SeasonPassCalc/">한국어</a></span>
+        <span class="link-effect"><a id="lang-cn"
+                href="https://jaehyuk-lee.github.io/KartriderRushPlus_SeasonPassCalc/index.cn">中文繁體</a></span>
+        <span class="link-effect"><a id="lang-pt_BR"
+                href="https://jaehyuk-lee.github.io/KartriderRushPlus_SeasonPassCalc/index.pt">Português</a></span>
+    </p>
+    <ul>
+        <li>email do desenvolvedor: alex00728@outlook.com</li>
+        <li>Respositório no Github: <span class="link-effect"><a
+                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
+                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
+        </li>
+    </ul>
+</footer>
+
+<script>
+    initSeasonInformation();
+</script>
+
+</html>
