@@ -57,13 +57,14 @@
 </body>
 <footer>
     <p>
-        <img src="./resources/LanguageIcon-Big.jpg" id="language-icon">
-        <span class="link-effect"><a id="lang-en"
-                href="https://jaehyuk-lee.github.io/KartriderRushPlus_SeasonPassCalc/index.en">English</a></span>
-        <span class="link-effect"><a id="lang-cn"
-                href="https://jaehyuk-lee.github.io/KartriderRushPlus_SeasonPassCalc/index.cn">中文繁體</a></span>
-        <span class="link-effect"><a id="lang-pt"
-                href="https://jaehyuk-lee.github.io/KartriderRushPlus_SeasonPassCalc/index.pt">Português</a></span>
+        <img src="./resources/LanguageIcon-Big.jpg" id="language-icon">&nbsp;
+        <select onchange='changeLang()' id='change-lang'>
+            <option value="">Language</option>
+            <option value="ko">한국어</option>
+            <option value="en">English</option>
+            <option value="cn">中文繁體</option>
+            <option value="pt">Português</option>
+        </select>
     </p>
     <ul>
         <li>개발자 email: alex00728@outlook.com</li>

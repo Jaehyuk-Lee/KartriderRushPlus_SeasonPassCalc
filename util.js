@@ -26,3 +26,11 @@ function errorAlert(text) {
         text: text,
     });
 }
+
+function changeLang() {
+    const lang = document.getElementById('change-lang').value;
+    if (lang == 'ko')
+        window.location = 'index.html';
+    else
+        window.location = `index.${lang}.html`;
+  }

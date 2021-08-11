@@ -9,7 +9,7 @@
     width: 25px;
 }
 
-#lang-en, #lang-ko, #lang-cn {
+select {
     font-size: 20px;
 }
 
