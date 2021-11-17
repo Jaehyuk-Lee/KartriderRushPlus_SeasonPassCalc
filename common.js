@@ -70,6 +70,10 @@ const SEASON_DATA = {
     },
     S10: {
         START: new Date('2021-11-10T00:00:00Z'),
+        END: new Date('2022-01-11T23:59:59Z'),
+    },
+    S11: {
+        START: new Date('2022-01-12T00:00:00Z'),
         END: undefined,
     },
 
