@@ -96,7 +96,7 @@ function initSeasonInformation() {
             break;
     }
 
-    nowSeasonNumber = nowSeason.substr(1, 1);
+    nowSeasonNumber = nowSeason.substr(1);
     seasonStart = SEASON_DATA[nowSeason].START;
     seasonEnd = SEASON_DATA[nowSeason].END;
 
