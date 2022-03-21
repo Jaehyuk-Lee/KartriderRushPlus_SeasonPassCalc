@@ -29,9 +29,8 @@
             <option value="-8">대만 (UTC+8)</option>
         </select>
     </div>
-    <div class="inputDesc"><span>로얄패스 구매 여부:</span><input type="checkbox" id="royalPass"
-            onchange="toggleWeeklyQuest(this)"></div>
-    <div class="inputDesc display-none" id="weeklyQuest"><span>도전퀘스트 완료 주 (0-9):</span> <input type="number"
+    <div class="inputDesc"><span>로얄패스 구매 여부:</span><input type="checkbox" id="royalPass"></div>
+    <div class="inputDesc" id="weeklyQuest"><span>도전퀘스트 완료 주 (0-9):</span> <input type="number"
             id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">주</div>
     <div class="inputDesc"><span>현재 패스 레벨:</span> <input type="number" id="nowLevel" maxlength="3" min="1" max="999"
             oninput="maxLengthCheck(this)" value="1">레벨</div>
@@ -44,8 +43,8 @@
     <div>필요한 포인트: <span id="needPoint">0</span>포인트</div>
     <div>일일퀘스트 풀보상 요구 날짜: <span id="needDay">0</span>일</div>
     <div>1일당 획득해야 할 포인트: <span id="needPointPerDay">0</span>포인트</div>
-    <div class="display-none royal">도전퀘스트 모두 완료시 일일퀘스트 풀보상 요구 날짜: <span id="needDay-clearWeekly">0</span>일</div>
-    <div class="display-none royal">도전퀘스트 모두 완료시 1일당 획득해야 할 포인트: <span id="needPointPerDay-clearWeekly">0</span>포인트
+    <div>도전퀘스트 모두 완료시 일일퀘스트 풀보상 요구 날짜: <span id="needDay-clearWeekly">0</span>일</div>
+    <div>도전퀘스트 모두 완료시 1일당 획득해야 할 포인트: <span id="needPointPerDay-clearWeekly">0</span>포인트
     </div>
     <div class="bold red" id="possibleOrNot">목표 달성이 가능합니다.</div>
     <div>이론상 가능한 최대 레벨: <span id="possibleLevel">0</span>레벨</div>
@@ -53,7 +52,7 @@
     <h2>패스 기본 상식</h2>
     무료패스 일일퀘스트 풀보상: 180포인트<br>
     로얄패스 일일퀘스트 풀보상: 195포인트<br>
-    로얄패스 도전퀘스트 풀보상: 매주 800포인트
+    로얄패스 도전퀘스트 풀보상: 매주 1130포인트
 </body>
 <footer>
     <p>

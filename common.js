@@ -88,6 +88,8 @@ const SEASON_DATA = {
     // ADD NEW SEASON INFORMATION TO WORK PROPERLY
 }
 
+const WEEKLYPOINTS = 1130;
+
 let nowSeasonNumber, nowSeason, seasonStart, seasonEnd;
 
 function initSeasonInformation() {
@@ -138,10 +140,10 @@ function findRemainingDates() {
 }
 
 function toggleWeeklyQuest(object) {
-    if (object.checked)
-        document.getElementById("weeklyQuest").classList.remove('display-none');
-    else
-        document.getElementById("weeklyQuest").classList.add('display-none');
+    // if (object.checked)
+    //     document.getElementById("weeklyQuest").classList.remove('display-none');
+    // else
+    //     document.getElementById("weeklyQuest").classList.add('display-none');
 }
 
 function calculate() {
@@ -172,16 +174,16 @@ function calculate() {
     let dailyPoint = b_RoyalPass ? 195 : 180;
     let clearedWeekly = parseInt(document.getElementById("clearedWeeklyQuest").value || 0);
     let needDay = Math.ceil(needPoint / dailyPoint);
-    let needDay_clearWeekly = Math.ceil((needPoint - (9 - clearedWeekly) * 800) / dailyPoint);
+    let needDay_clearWeekly = Math.ceil((needPoint - (9 - clearedWeekly) * WEEKLYPOINTS) / dailyPoint);
 
     document.getElementById("needDay").innerText = needDay;
     document.getElementById("needDay-clearWeekly").innerText = needDay_clearWeekly;
-    document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * 800) / remainingDate);
+    document.getElementById("needPointPerDay-clearWeekly").innerText = Math.ceil((needPoint - (9 - clearedWeekly) * WEEKLYPOINTS) / remainingDate);
     let possibleLevel;
-    if (b_RoyalPass)
-        possibleLevel = (remainingDate * dailyPoint - remainPoint + (9 - clearedWeekly) * 800) / 100 + 1 + nowLevel;
-    else
-        possibleLevel = (remainingDate * dailyPoint - remainPoint) / 100 + 1 + nowLevel;
+    // if (b_RoyalPass)
+        possibleLevel = (remainingDate * dailyPoint - remainPoint + (9 - clearedWeekly) * WEEKLYPOINTS) / 100 + 1 + nowLevel;
+    // else
+    //     possibleLevel = (remainingDate * dailyPoint - remainPoint) / 100 + 1 + nowLevel;
     document.getElementById("possibleLevel").innerText = Math.floor(possibleLevel);
 
     if (targetLevel <= possibleLevel)
