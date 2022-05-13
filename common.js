@@ -87,7 +87,7 @@ const SEASON_DATA = {
     },
     S13: {
         START: new Date('2022-05-01T00:00:00Z'),
-        END: new Date('2022-05-31T23:59:59Z'),
+        END: undefined,
     },
 
     // ADD NEW SEASON INFORMATION TO WORK PROPERLY
