@@ -1,82 +1,140 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zn-TW">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1" />
     <link rel="shortcut icon" type="image/jpg" href="./favicon.png" />
-    <link rel="stylesheet" href="./style.css">
-    <title>跑跑卡丁車 Rush+ 通行證計算器</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>通行證計算器 - 跑跑卡丁車 Rush+</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script>
-        const lang = 'zh_TW';
+        const lang = 'zn_TW';
     </script>
     <script src="./util.js"></script>
     <script src="./common.js"></script>
 </head>
 
 <body>
-    <h1>跑跑卡丁車 Rush+ 通行證計算器</h1>
+    <div id="divMain">
+        <header class="body">
+            <img src="./resources/KartRiderRushLogo.png" id="KRRLogo" alt="Logo of KartRider Rush+">
+            <h1 id="mainTitle">月票计算器</h1>
+        </header>
+        
+        <main class="body">        
+            
+            <section id="passInfo">
+                <h2>No.<span id="seasonNumber"></span></h2>
+                <div>
+                    <h3>通行證術語</h3>
+                    <p><span id="passPeriod"></span></p>
+                </div>
+                <div>
+                    <h3>剩餘日期</h3>
+                    <p><span id="remainDate"></span> 天</b> （<span><u>今天已排除</u></span>）</p>
+                </div>
+            </section>
+    
+            <section id="theCalc">
+                
+                <table id="inputs">
+                    <tr>
+                        <td class="inputDesc">服務器時間：</td>
+                        <td class="inputItem option"><select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
+                            <option value="-8">臺灣（UTC+8）</option>
+                            <option value="-8">東南亞（UTC+8）</option>
+                            <option value="7">北美（UTC-8）</option>
+                            <option value="-9">韓國（UTC+9）</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">榮譽通行證採購嗎？</td>
+                        <td class="inputItem checkbox"><input type="checkbox" id="royalPass" onchange="toggleWeeklyQuest(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">挑戰任務完成週:</td>
+                        <td class="inputItem number" id="weeklyQuest"><input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="4" placeholder="0 - 4" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">現在級還：</td>
+                        <td class="inputItem number"><input type="number" id="nowLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">下一級之前的分數：</td>
+                        <td class="inputItem number"><input type="number" id="remainPoint" maxlength="3" min="0" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">目標級還：</td>
+                        <td class="inputItem number"><input type="number" id="targetLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                </table>
 
-    <h2>No.<span id="seasonNumber"></span></h2>
-    <b>通行證術語：<span id="passPeriod"></span></b><br>
-    <b>剩餘日期：<span id="remainDate"></span>天</b>（<span class="underline">今天已排除</span>）<br>
-    <div class="inputDesc"><span>服務器時間：</span>
-        <select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
-            <option value="-8">臺灣（UTC+8）</option>
-            <option value="-8">東南亞（UTC+8）</option>
-            <option value="7">北美（UTC-8）</option>
-            <option value="-9">韓國（UTC+9）</option>
-        </select>
+                <div id="buttonContainer">
+                    <div class="button large" id="calcButton" onclick="calculate()">
+                        <p>計算</p>
+                    </div>
+                </div>
+            </section>
+    
+            <section id="results">
+                <ul>
+                    <li><strong>以下所有計算均不包括今天。</strong></li>
+                    <li>要求分積分：<span id="needPoint">0</span></li>
+                    <li>每日任務最高獎勵天數：<span id="needDay">0</span></li>
+                    <li>每天需要的積分：<span id="needPointPerDay">0</span></li>
+                    <li class="display-none royal">挑戰任務完成後，每日任務最高獎勵天數：<span id="needDay-clearWeekly">0</span> 天</li>
+                    <li class="display-none royal">挑戰任務完成後，每天需要的積分：<span id="needPointPerDay-clearWeekly">0</span>積分</li>
+                    <li>理論最大可能級還：<span id="possibleLevel">0</span></li>
+                    <li id="possibleOrNot">您可以實現自己的目標。</li>
+                </ul>
+            </section>
+    
+            <section id="facts">
+                <h2>通行證基本事實</h2>
+                <ul>
+                    <li>每日最高奖励 <span>（完成日常任务）</span>: 375 積分</li>
+                    <li>每周最高奖励 <span>（完成日常任务）</span>: 1250 積分</li>
+                    <li>挑战奖励: 每週1200積分</li>
+                </ul>
+            </section>
+    
+        </main>
+    
+        <footer class="body">
+            <div id="footer">
+                <abbr title="Credits:Language icon(id: language-icon)
+                By: Chanut is Industries (https://www.iconfinder.com/Chanut-is)
+                Font: https://icon-icons.com/pt/icone/idioma-tradutor/150921
+                License type: https://creativecommons.org/licenses/by/3.0/">                    
+                <img src="./resources/languageIcon.png" id="language-icon">&nbsp;
+                </abbr>
+                <select onchange='changeLang()' id='change-lang'>
+                    <option value="">Language</option>
+                    <option value="ko">한국어</option>
+                    <option value="en">English</option>
+                    <option value="cn">中文繁體</option>
+                    <option value="pt">Português</option>
+                    <option value="es">Español</option>
+                </select>
+            
+                <section id="pageNotes">
+                    <ul>
+                        <li>程式開發人員 email: alex00728@outlook.com<br>（我不懂中文。請用英文。English Please.）</li>
+                        <li>Github Repo: <span class="link-effect"><a
+                                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
+                                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </footer>
     </div>
-    <div class="inputDesc"><span>榮譽通行證採購嗎？</span><input type="checkbox" id="royalPass"
-            onchange="toggleWeeklyQuest(this)"></div>
-    <div class="inputDesc" id="weeklyQuest"><span>挑戰任務完成週（0-9）：</span> <input type="number"
-            id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">週</div>
-    <div class="inputDesc"><span>現在級還：</span> <input type="number" id="nowLevel" maxlength="3" min="1" max="999"
-            oninput="maxLengthCheck(this)" value="1">級還</div>
-    <div class="inputDesc"><span>下一級之前的分數：</span> <input type="number" id="remainPoint" maxlength="3" min="0" max="100"
-            oninput="maxLengthCheck(this)">積分</div>
-    <div class="inputDesc"><span>目標級還：</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200"
-            oninput="maxLengthCheck(this)">級還</div>
-    <div class="button large" id="calcButton" onclick="calculate()">計算</div>
-    <h4>以下所有計算均不包括今天。</h4>
-    <div>要求分積分：<span id="needPoint">0</span>積分</div>
-    <div>每日任務最高獎勵天數：<span id="needDay">0</span>天</div>
-    <div>每天需要的積分：<span id="needPointPerDay">0</span>積分</div>
-    <div class="display-none royal">挑戰任務完成後，每日任務最高獎勵天數：<span id="needDay-clearWeekly">0</span>天</div>
-    <div class="display-none royal">挑戰任務完成後，每天需要的積分：<span id="needPointPerDay-clearWeekly">0</span>積分
-    </div>
-    <div class="bold red" id="possibleOrNot">您可以實現自己的目標。</div>
-    <div>理論最大可能級還：<span id="possibleLevel">0</span>級還</div>
 
-    <h2>通行證基本事實</h2>
-    活躍通行證每日任務最高獎勵：180積分<br>
-    榮譽通行證每日任務最高獎勵：195積分<br>
-    榮譽通行證挑戰任務最高獎勵：每週1130積分
+    <script>
+        initSeasonInformation();
+    </script>
 </body>
-<footer>
-    <p>
-        <img src="./resources/LanguageIcon-Big.jpg" id="language-icon">&nbsp;
-        <select onchange='changeLang()' id='change-lang'>
-            <option value="">Language</option>
-            <option value="ko">한국어</option>
-            <option value="en">English</option>
-            <option value="cn">中文繁體</option>
-            <option value="pt">Português</option>
-        </select>
-    </p>
-    <ul>
-        <li>程式開發人員 email：alex00728@outlook.com<br>（我不懂中文。請用英文。English Please.）</li>
-        <li>Github Repo：<span class="link-effect"><a
-                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
-                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
-        </li>
-    </ul>
-</footer>
-
-<script>
-    initSeasonInformation();
-</script>
 
 </html>
