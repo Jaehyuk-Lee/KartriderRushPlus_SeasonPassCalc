@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1" />
     <link rel="shortcut icon" type="image/jpg" href="./favicon.png" />
-    <link rel="stylesheet" href="./style.css">
-    <title>카트라이더 시즌 패스 계산기</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <title>패스 계산기 - 카트라이더 러쉬플러스</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script>
         const lang = 'ko';
@@ -16,66 +16,125 @@
 </head>
 
 <body>
-    <h1>카러플 시즌 패스 계산기</h1>
+    <div id="divMain">
+        <header class="body">
+            <img src="./resources/KartRiderRushLogo.png" id="KRRLogo" alt="Logo of KartRider Rush+">
+            <h1 id="mainTitle">월정액 계산기</h1>
+        </header>
+        
+        <main class="body">        
+            
+            <section id="passInfo">
+                <h2>시즌<span id="seasonNumber"></span></h2>
+                <div>
+                    <h3>시즌패스 기간</h3>
+                    <p><span id="passPeriod"></span></p>
+                </div>
+                <div>
+                    <h3>남은 날짜</h3>
+                    <p><span id="remainDate"></span> 일</b> (<span><u>오늘 제외</u></span>)</p>
+                </div>
+            </section>
+    
+            <section id="theCalc">
+                
+                <table id="inputs">
+                    <tr>
+                        <td class="inputDesc">서버 시간:</td>
+                        <td class="inputItem option"><select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
+                            <option value="-9">한국 (UTC+9)</option>
+                            <option value="7">북미 (UTC-8)</option>
+                            <option value="-8">동남아 (UTC+8)</option>
+                            <option value="-8">대만 (UTC+8)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">로얄패스 구매 여부:</td>
+                        <td class="inputItem checkbox" id="weeklyQuest"><input type="checkbox" id="royalPass" onchange="toggleWeeklyQuest(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">도전퀘스트 완료 주:</td>
+                        <td class="inputItem number"><input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="4" placeholder="0 - 4" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">현재 패스 레벨:</td>
+                        <td class="inputItem number"><input type="number" id="nowLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">다음 레벨까지 남은 포인트:</td>
+                        <td class="inputItem number"><input type="number" id="remainPoint" maxlength="3" min="0" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">목표 패스 레벨:</td>
+                        <td class="inputItem number"><input type="number" id="targetLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                </table>
 
-    <h2>시즌<span id="seasonNumber"></span></h2>
-    <b>시즌패스 기간: <span id="passPeriod"></span></b><br>
-    <b>남은 날짜: <span id="remainDate"></span>일</b>(<span class="underline">오늘 제외</span>)<br>
-    <div class="inputDesc"><span>서버 시간: </span>
-        <select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
-            <option value="-9">한국 (UTC+9)</option>
-            <option value="7">북미 (UTC-8)</option>
-            <option value="-8">동남아 (UTC+8)</option>
-            <option value="-8">대만 (UTC+8)</option>
-        </select>
+                <div id="buttonContainer">
+                    <div class="button large" id="calcButton" onclick="calculate()">
+                        <p>계산하기</p>
+                    </div>
+                </div>
+            </section>
+    
+            <section id="results">
+                <ul>
+                    <li><strong>아래 모든 계산은 오늘을 제외합니다.</strong></li>
+                    <li>필요한 포인트: <span id="needPoint">0</span></li>
+                    <li>일일퀘스트 풀보상 요구 날짜: <span id="needDay">0</span></li>
+                    <li>1일당 획득해야 할 포인트: <span id="needPointPerDay">0</span></li>
+                    <li class="display-none royal">도전퀘스트 모두 완료시 일일퀘스트 풀보상 요구 날짜: <span id="needDay-clearWeekly">0</span> 일</li>
+                    <li class="display-none royal">도전퀘스트 모두 완료시 1일당 획득해야 할 포인트: <span id="needPointPerDay-clearWeekly">0</span> 포인트</li>
+                    <li>이론상 가능한 최대 레벨: <span id="possibleLevel">0</span></li>
+                    <li id="possibleOrNot">목표 달성이 가능합니다.</li>
+                </ul>
+            </section>
+    
+            <section id="facts">
+                <h2>패스 기본 상식</h2>
+                <ul>
+                    <li>패스 일일퀘스트 풀보상 <span>(일일 퀘스트 완료)</span>: 375포인트</li>
+                    <li>무료패스 주간퀘스트 풀보상: <span>(일일 퀘스트 완료)</span>: 1250포인트</li>
+                    <li>도전퀘스트 풀보상: 매주 1200포인트</li>
+                </ul>
+            </section>
+    
+        </main>
+    
+        <footer class="body">
+            <div id="footer">
+                <abbr title="Credits:Language icon(id: language-icon)
+                By: Chanut is Industries (https://www.iconfinder.com/Chanut-is)
+                Font: https://icon-icons.com/pt/icone/idioma-tradutor/150921
+                License type: https://creativecommons.org/licenses/by/3.0/">                    
+                <img src="./resources/languageIcon.png" id="language-icon">&nbsp;
+                </abbr>
+                <select onchange='changeLang()' id='change-lang'>
+                    <option value="">Language</option>
+                    <option value="ko">한국어</option>
+                    <option value="en">English</option>
+                    <option value="cn">中文繁體</option>
+                    <option value="pt">Português</option>
+                    <option value="es">Español</option>
+                </select>
+            
+                <section id="pageNotes">
+                    <ul>
+                        <li>개발자: alex00728@outlook.com</li>
+                        <li>Github Repo: <span class="link-effect"><a
+                                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
+                                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </footer>
     </div>
-    <div class="inputDesc"><span>로얄패스 구매 여부:</span><input type="checkbox" id="royalPass"></div>
-    <div class="inputDesc" id="weeklyQuest"><span>도전퀘스트 완료 주 (0-9):</span> <input type="number"
-            id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">주</div>
-    <div class="inputDesc"><span>현재 패스 레벨:</span> <input type="number" id="nowLevel" maxlength="3" min="1" max="999"
-            oninput="maxLengthCheck(this)" value="1">레벨</div>
-    <div class="inputDesc"><span>다음 레벨까지 남은 포인트:</span> <input type="number" id="remainPoint" maxlength="3" min="0"
-            max="100" oninput="maxLengthCheck(this)">포인트</div>
-    <div class="inputDesc"><span>목표 패스 레벨:</span> <input type="number" id="targetLevel" maxlength="3" min="1" max="200"
-            oninput="maxLengthCheck(this)">레벨</div>
-    <div class="button large" id="calcButton" onclick="calculate()">계산하기</div>
-    <h4>아래 모든 계산은 오늘을 제외합니다.</h4>
-    <div>필요한 포인트: <span id="needPoint">0</span>포인트</div>
-    <div>일일퀘스트 풀보상 요구 날짜: <span id="needDay">0</span>일</div>
-    <div>1일당 획득해야 할 포인트: <span id="needPointPerDay">0</span>포인트</div>
-    <div>도전퀘스트 모두 완료시 일일퀘스트 풀보상 요구 날짜: <span id="needDay-clearWeekly">0</span>일</div>
-    <div>도전퀘스트 모두 완료시 1일당 획득해야 할 포인트: <span id="needPointPerDay-clearWeekly">0</span>포인트
-    </div>
-    <div class="bold red" id="possibleOrNot">목표 달성이 가능합니다.</div>
-    <div>이론상 가능한 최대 레벨: <span id="possibleLevel">0</span>레벨</div>
 
-    <h2>패스 기본 상식</h2>
-    무료패스 일일퀘스트 풀보상: 180포인트<br>
-    로얄패스 일일퀘스트 풀보상: 195포인트<br>
-    로얄패스 도전퀘스트 풀보상: 매주 1130포인트
+    <script>
+        initSeasonInformation();
+    </script>
 </body>
-<footer>
-    <p>
-        <img src="./resources/LanguageIcon-Big.jpg" id="language-icon">&nbsp;
-        <select onchange='changeLang()' id='change-lang'>
-            <option value="">Language</option>
-            <option value="ko">한국어</option>
-            <option value="en">English</option>
-            <option value="cn">中文繁體</option>
-            <option value="pt">Português</option>
-        </select>
-    </p>
-    <ul>
-        <li>개발자 email: alex00728@outlook.com</li>
-        <li>Github Repo: <span class="link-effect"><a
-                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
-                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
-        </li>
-    </ul>
-</footer>
-
-<script>
-    initSeasonInformation();
-</script>
 
 </html>

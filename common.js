@@ -4,30 +4,35 @@ const LOCALIZE = {
         en: 'Please enter all fields.',
         zh_TW: '請輸入所有項目。',
         pt: 'Por favor, preencha todos os campos.',
+        es: 'Por favor, rellena todos los campos.',
     },
     possibleAchieve: {
         ko: '목표 달성이 가능합니다.',
         en: 'Possible to achieve your goal.',
         zh_TW: '您可以實現自己的目標。',
-        pt: 'É possível alvançar sua meta.',
+        pt: 'É possível alcançar sua meta.',
+        es: 'Es posible alcanzar tu meta.',
     },
     impossibleAchieve: {
         ko: '목표 달성이 불가능합니다.',
         en: 'Impossible to achieve your goal.',
         zh_TW: '無法實現目標。',
         pt: 'Impossível alcançar sua meta.',
+        es: 'No es posible alcanzar tu meta.',
     },
     notSupportedYet: {
         ko: '아직 이번 시즌 대응 업데이트를 하지 않았습니다.',
-        en: 'Not yet updated for latest season pass.',
+        en: 'Not yet updated for latest Pass.',
         zh_TW: '尚未更新。',
-        pt: 'Ainda não atualizado para o último passe de temporada.',
+        pt: 'Ainda não atualizado para o último Passe.',
+        es: 'Todavía no actualizado al último Pase.',
     },
     notStartedYet: {
         ko: '아직 이번 시즌 패스 기간이 아닙니다.',
         en: 'Pass period not yet started.',
         zh_TW: '通行證術語還沒開始。',
-        pt: 'O período do passe ainda não começou.',
+        pt: 'O período do Passe ainda não começou.',
+        es: 'El período del Pase aún no ha comenzado.',
     }
 }
 

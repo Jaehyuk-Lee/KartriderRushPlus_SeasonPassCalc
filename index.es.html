@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -9,10 +9,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
-    <title>Pass Calculator - KartRider Rush+</title>
+    <title>Calculadora de Pase Mensual - KartRider Rush+</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script>
-        const lang = 'en';
+        const lang = 'es';
     </script>
     <script src="./util.js"></script>
     <script src="./common.js"></script>
@@ -22,20 +22,20 @@
     <div id="divMain">
         <header class="body">
             <img src="./resources/KartRiderRushLogo.png" id="KRRLogo" alt="Logo of KartRider Rush+">
-            <h1 id="mainTitle">Monthly Season Pass</h1>
+            <h1 id="mainTitle">Calculadora de Pase Mensual</h1>
         </header>
         
         <main class="body">        
             
             <section id="passInfo">
-                <h2>Pass Nº <span id="seasonNumber"></span></h2>
+                <h2>Pase No. <span id="seasonNumber"></span></h2>
                 <div>
-                    <h3>Pass Period</h3>
+                    <h3>Período de Pase</h3>
                     <p><span id="passPeriod"></span></p>
                 </div>
                 <div>
-                    <h3>Remaining Dates</h3>
-                    <p><span id="remainDate"></span> Days</b> (<span><u>Except today</u></span>)</p>
+                    <h3>Tiempo restante</h3>
+                    <p><span id="remainDate"></span> Dias</b> (<span class="underline">Excepto hoy</span>)</p>
                 </div>
             </section>
     
@@ -43,7 +43,7 @@
                 
                 <table id="inputs">
                     <tr>
-                        <td class="inputDesc">Server Time:</td>
+                        <td class="inputDesc">Tiempo de Servidor:</td>
                         <td class="inputItem option"><select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
                             <option value="7">West (UTC-8)</option>
                             <option value="-8">SEA (UTC+8)</option>
@@ -53,53 +53,53 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="inputDesc">Bought Premium Pass?</td>
+                        <td class="inputDesc">¿Compraste el Glory Pass?</td>
                         <td class="inputItem checkbox"><input type="checkbox" id="royalPass" onchange="toggleWeeklyQuest(this)"></td>
                     </tr>
                     <tr>
-                        <td class="inputDesc">Cleared Challenge Week:</td>
-                        <td class="inputItem number" id="weeklyQuest"><input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="4" placeholder="0 - 4" oninput="maxLengthCheck(this)"></td>
+                        <td class="inputDesc">Desafíos semanales completos:</td>
+                        <td class="inputItem number" id="weeklyQuest"><input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="4" placeholder="0 al 4" oninput="maxLengthCheck(this)"></td>
                     </tr>
                     <tr>
-                        <td class="inputDesc">Your Pass Level:</td>
+                        <td class="inputDesc">Su nível de Passe:</td>
                         <td class="inputItem number"><input type="number" id="nowLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)" value="1"></td>
                     </tr>
                     <tr>
-                        <td class="inputDesc">Points before next level:</td>
+                        <td class="inputDesc">Puntos restantes para el siguiente nivel:</td>
                         <td class="inputItem number"><input type="number" id="remainPoint" maxlength="3" min="0" max="100" oninput="maxLengthCheck(this)"></td>
                     </tr>
                     <tr>
-                        <td class="inputDesc">Target Level:</td>
+                        <td class="inputDesc">Nivel objetivo:</td>
                         <td class="inputItem number"><input type="number" id="targetLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)"></td>
                     </tr>
                 </table>
 
                 <div id="buttonContainer">
                     <div class="button large" id="calcButton" onclick="calculate()">
-                        <p>Calculate</p>
+                        <p>Calcular</p>
                     </div>
                 </div>
             </section>
     
             <section id="results">
                 <ul>
-                    <li><strong>Calculations below do not include today.</strong></li>
-                    <li>Needed Points: <span id="needPoint">0</span></li>
-                    <li>Days with Daily Maximum Rewards: <span id="needDay">0</span></li>
-                    <li>Needed Points Per Day: <span id="needPointPerDay">0</span></li>
-                    <li class="display-none royal">Clear All Challenges + Days with Daily Maximum Rewards: <span id="needDay-clearWeekly">0</span>Days</li>
-                    <li class="display-none royal">Clear All Challenges + Needed Points Per Day: <span id="needPointPerDay-clearWeekly">0</span>Points</li>
-                    <li>Theoretically Maximum Level: <span id="possibleLevel">0</span></li>
-                    <li id="possibleOrNot">Possible to achieve your goal.</li>
+                    <li><strong>Los cálculos abajo no incluyen hoy.</strong></li>
+                    <li>Puntos necesarios: <span id="needPoint">0</span></li>
+                    <li>Días con Máximo de Recompensas Diarias: <span id="needDay">0</span></li>
+                    <li>Puntos necesarios por día: <span id="needPointPerDay">0</span></li>
+                    <li class="display-none royal">Completar todos los desafíos y recompensas máximas diarias: <span id="needDay-clearWeekly">0</span> 5 días para completar</li>
+                    <li class="display-none royal">Completar todos los desafíos requerirá: <span id="needPointPerDay-clearWeekly">0</span> puntos por día</li>
+                    <li>Nivel Máximo (Teóricamente): <span id="possibleLevel">0</span></li>
+                    <li id="possibleOrNot">Es posible alcanzar tu meta.</li>
                 </ul>
             </section>
     
             <section id="facts">
-                <h2>Season Pass Basic Facts</h2>
+                <h2>Conceptos Básicos del Pase</h2>
                 <ul>
-                    <li>Daily Maximum Rewards <span>(completing daily quests)</span>: 375 Points</li>
-                    <li>Weekly Maximum Rewards: <span>(completing daily quests)</span>: 1,250 Points</li>
-                    <li>Challenge Rewards: 1,200 Points/Week</li>
+                    <li>Recompensa diaria máxima <span>(completando misiones diarias)</span>: 375 Puntos</li>
+                    <li>Recompensa semanal máxima <span>(completando misiones diarias)</span>: 1.250 Puntos</li>
+                    <li>Recompensa de desafíos: 1.200 Puntos/Semana</li>
                 </ul>
             </section>
     
@@ -124,8 +124,12 @@
             
                 <section id="pageNotes">
                     <ul>
-                        <li>Developer email: alex00728@outlook.com</li>
-                        <li>Github Repo: <span class="link-effect"><a
+                        <li>Traducción: <span class="link-effect"><a
+                                    href="https://euna.bio/ArthurOliveiraSou"
+                                    target="_blank">Arthur Oliveira</a></span>
+                        <li>Email del desarrollador: alex00728@outlook.com<br>
+                            (No entiendo español, English Please.)</li>
+                        <li>Repositorio en GitHub: <span class="link-effect"><a
                                     href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
                                     target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
                         </li>
