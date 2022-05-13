@@ -5,8 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1" />
     <link rel="shortcut icon" type="image/jpg" href="./favicon.png" />
-    <link rel="stylesheet" href="./style.css">
-    <title>Calculadora de Passe de Temporada - KartRider Rush+</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <title>Calculadora de Passe Mensal - KartRider Rush+</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script>
         const lang = 'pt';
@@ -16,75 +19,132 @@
 </head>
 
 <body>
-    <h1>KartRider Rush+ | Calculadora de Passe de Temporada</h1>
+    <div id="divMain">
+        <header class="body">
+            <img src="./resources/KartRiderRushLogo.png" id="KRRLogo" alt="Logo of KartRider Rush+">
+            <h1 id="mainTitle">Calculadora de Passe Mensal</h1>
+        </header>
+        
+        <main class="body">        
+            
+            <section id="passInfo">
+                <h2>Passe Nº <span id="seasonNumber"></span></h2>
+                <div>
+                    <h3>Período do passe</h3>
+                    <p><span id="passPeriod"></span></p>
+                </div>
+                <div>
+                    <h3>Tempo restante</h3>
+                    <p><span id="remainDate"></span> Dias</b> (<span class="underline">Exceto hoje</span>)</p>
+                </div>
+            </section>
+    
+            <section id="theCalc">
+                
+                <table id="inputs">
+                    <tr>
+                        <td class="inputDesc">Horário do Servidor:</td>
+                        <td class="inputItem option"><select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
+                            <option value="7">West (UTC-8)</option>
+                            <option value="-8">SEA (UTC+8)</option>
+                            <option value="-8">East Asia (UTC+8)</option>
+                            <option value="-9">KR (UTC+9)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Comprou o Passe de Glória?</td>
+                        <td class="inputItem checkbox"><input type="checkbox" id="royalPass" onchange="toggleWeeklyQuest(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Desafios Semanais Completos:</td>
+                        <td class="inputItem number" id="weeklyQuest"><input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="4" placeholder="0 à 4" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Seu nível no Passe:</td>
+                        <td class="inputItem number"><input type="number" id="nowLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Pontos restantes para o próximo Nível:</td>
+                        <td class="inputItem number"><input type="number" id="remainPoint" maxlength="3" min="0" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Nível Alvo:</td>
+                        <td class="inputItem number"><input type="number" id="targetLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                </table>
 
-    <h2>Temporada <span id="seasonNumber"></span></h2>
-    <b>Período do Passe: <span id="passPeriod"></span></b><br>
-    <b>Tempo restante: <span id="remainDate"></span> Dias</b> (<span class="underline">Exceto hoje</span>)<br>
-    <div class="inputDesc"><span>Horário do Servidor: </span>
-        <select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
-            <option value="7">West (UTC-8)</option>
-            <option value="-8">SEA (UTC+8)</option>
-            <option value="-8">East Asia (UTC+8)</option>
-            <option value="-9">KR (UTC+9)</option>
-        </select>
+                <div id="buttonContainer">
+                    <div class="button large" id="calcButton" onclick="calculate()">
+                        <p>Calcular</p>
+                    </div>
+                </div>
+            </section>
+    
+            <section id="results">
+                <ul>
+                    <li><strong>Os cálculos abaixo não incluem hoje.</strong></li>
+                    <li>Pontos necessários: <span id="needPoint">0</span></li>
+                    <li>Dias com Recompensas Máximas Diárias: <span id="needDay">0</span></li>
+                    <li>Pontos Necessários Por Dia: <span id="needPointPerDay">0</span></li>
+                    <li class="display-none royal">Completando Todos os desafios e recompensas máximas diárias: <span id="needDay-clearWeekly">0</span> dias para concluir</li>
+                    <li class="display-none royal">Completando Todos os desafios, serão necessários: <span id="needPointPerDay-clearWeekly">0</span> pontos por dia</li>
+                    <li>Nível Máximo (Teoricamente): <span id="possibleLevel">0</span></li>
+                    <li id="possibleOrNot">É possível alcançar sua meta.</li>
+                </ul>
+            </section>
+    
+            <section id="facts">
+                <h2>Fatos Básicos do Passe de Temporada</h2>
+                <ul>
+                    <li>Recompensa Máxima Diária <span>(completando missões diárias)</span>: 375 Pontos</li>
+                    <li>Recompensa Máxima Semanal <span>(completando missões diárias)</span>: 1.250 Pontos</li>
+                    <li>Recompensa dos Desafios: 1.200 Pontos/Semana</li>
+                </ul>
+            </section>
+    
+        </main>
+    
+        <footer class="body">
+            <div id="footer">
+                <abbr title="Credits:Language icon(id: language-icon)
+                By: Chanut is Industries (https://www.iconfinder.com/Chanut-is)
+                Font: https://icon-icons.com/pt/icone/idioma-tradutor/150921
+                License type: https://creativecommons.org/licenses/by/3.0/">                    
+                <img src="./resources/languageIcon.png" id="language-icon">&nbsp;
+                </abbr>
+                <select onchange='changeLang()' id='change-lang'>
+                    <option value="">Language</option>
+                    <option value="ko">한국어</option>
+                    <option value="en">English</option>
+                    <option value="cn">中文繁體</option>
+                    <option value="pt">Português</option>
+                    <option value="es">Español</option>
+                </select>
+            
+                <section id="pageNotes">
+                    <ul>
+                        <li>Tradução: <span class="link-effect"><a
+                                    href="https://linktr.ee/KartRiderBrasil"
+                                    target="_blank">Comunidade Brasileira de KartRider</a></span>
+                            por<span class="link-effect"><a
+                                    href="https://euna.bio/ArthurOliveiraSou"
+                                    target="_blank">Arthur Oliveira</a></span>
+                        <li>Email do desenvolvedor: alex00728@outlook.com<br>
+                            (Não entendo português, English Please.)</li>
+                        <li>Respositório no Github: <span class="link-effect"><a
+                                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
+                                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </footer>
     </div>
-    <div class="inputDesc"><span>Comprou o Passe de Glória?</span><input type="checkbox" id="royalPass"
-            onchange="toggleWeeklyQuest(this)"></div>
-    <div class="inputDesc" id="weeklyQuest"><span>Desafios Semanais Completos:</span> <input type="number"
-            id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)"> Semanas (0-9)</div>
-    <div class="inputDesc"><span>Seu Nível no Passe:</span> <input type="number" id="nowLevel" maxlength="3" min="1"
-            max="999" oninput="maxLengthCheck(this)" value="1"></div>
-    <div class="inputDesc"><span>Pontos no Nível Atual:</span> <input type="number" id="remainPoint" maxlength="3"
-            min="0" max="100" oninput="maxLengthCheck(this)"></div>
-    <div class="inputDesc"><span>Nível Alvo:</span> <input type="number" id="targetLevel" maxlength="3" min="1"
-            max="200" oninput="maxLengthCheck(this)"></div>
-    <div class="button large" id="calcButton" onclick="calculate()">Calcular</div>
-    <h4>Os cálculos abaixo não incluem hoje.</h4>
-    <div>Pontos necessários: <span id="needPoint">0</span> Pontos</div>
-    <div>Dias com Recompensas Máximas Diárias: <span id="needDay">0</span> Dias</div>
-    <div>Pontos Necessários Por Dia: <span id="needPointPerDay">0</span> Pontos</div>
-    <div class="display-none royal">Completando Todos os Desafios & Recompensas Máximas Diárias: <span
-            id="needDay-clearWeekly">0</span> Dias Para Concluir</div>
-    <div class="display-none royal">Completando Todos os Desafios, serão Necessários: <span
-            id="needPointPerDay-clearWeekly">0</span> Pontos Por Dia
-    </div>
-    <div class="bold red" id="possibleOrNot">É possível atingir seu objetivo.</div>
-    <div>Nível Máximo (Teoricamente): <span id="possibleLevel">0</span> Level</div>
 
-    <h2>Fatos Básicos do Passe de Temporada</h2>
-    Recompensa Máxima Diária com o Passe Grátis: 180 Pontos<br>
-    Recompensa Máxima Diária com o Passe de Glória: 195 Pontos<br>
-    Recompensa dos Desafios com o Passe de Glória: 1130 Pontos/Semana
+    <script>
+        initSeasonInformation();
+    </script>
 </body>
-<footer>
-    <p>
-        <img src="./resources/LanguageIcon-Big.jpg" id="language-icon">&nbsp;
-        <select onchange='changeLang()' id='change-lang'>
-            <option value="">Language</option>
-            <option value="ko">한국어</option>
-            <option value="en">English</option>
-            <option value="cn">中文繁體</option>
-            <option value="pt">Português</option>
-        </select>
-    </p>
-    <ul>
-        <li>Tradução: <span class="link-effect"><a
-                    href="https://linktr.ee/KartRiderBrasil"
-                    target="_blank">Comunidade Brasileira de KartRider</a></span>
-            por<span class="link-effect"><a
-                    href="https://linktr.ee/ArthurOliveiraSou"
-                    target="_blank">Arthur Oliveira</a></span>
-        <li>email do desenvolvedor: alex00728@outlook.com<br>(Não entendo português, English Please.)</li>
-        <li>Respositório no Github: <span class="link-effect"><a
-                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
-                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
-        </li>
-    </ul>
-</footer>
-
-<script>
-    initSeasonInformation();
-</script>
 
 </html>

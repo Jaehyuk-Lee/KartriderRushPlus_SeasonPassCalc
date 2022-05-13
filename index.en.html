@@ -5,8 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1" />
     <link rel="shortcut icon" type="image/jpg" href="./favicon.png" />
-    <link rel="stylesheet" href="./style.css">
-    <title>Kartrider SeasonPass Calculator</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <title>Pass Calculator - KartRider Rush+</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script>
         const lang = 'en';
@@ -16,69 +19,125 @@
 </head>
 
 <body>
-    <h1>Kartrider Pass Calculator</h1>
+    <div id="divMain">
+        <header class="body">
+            <img src="./resources/KartRiderRushLogo.png" id="KRRLogo" alt="Logo of KartRider Rush+">
+            <h1 id="mainTitle">Monthly Season Pass</h1>
+        </header>
+        
+        <main class="body">        
+            
+            <section id="passInfo">
+                <h2>Pass Nº <span id="seasonNumber"></span></h2>
+                <div>
+                    <h3>Pass Period</h3>
+                    <p><span id="passPeriod"></span></p>
+                </div>
+                <div>
+                    <h3>Remaining Dates</h3>
+                    <p><span id="remainDate"></span> Days</b> (<span><u>Except today</u></span>)</p>
+                </div>
+            </section>
+    
+            <section id="theCalc">
+                
+                <table id="inputs">
+                    <tr>
+                        <td class="inputDesc">Server Time:</td>
+                        <td class="inputItem option"><select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
+                            <option value="7">West (UTC-8)</option>
+                            <option value="-8">SEA (UTC+8)</option>
+                            <option value="-8">East Asia (UTC+8)</option>
+                            <option value="-9">KR (UTC+9)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Bought Premium Pass?</td>
+                        <td class="inputItem checkbox"><input type="checkbox" id="royalPass" onchange="toggleWeeklyQuest(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Cleared Challenge Week:</td>
+                        <td class="inputItem number" id="weeklyQuest"><input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="4" placeholder="0 - 4" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Your Pass Level:</td>
+                        <td class="inputItem number"><input type="number" id="nowLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Points before next level:</td>
+                        <td class="inputItem number"><input type="number" id="remainPoint" maxlength="3" min="0" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Target Level:</td>
+                        <td class="inputItem number"><input type="number" id="targetLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                </table>
 
-    <h2>Season <span id="seasonNumber"></span></h2>
-    <b>Pass Period: <span id="passPeriod"></span></b><br>
-    <b>Remaining Dates: <span id="remainDate"></span>Days</b>(<span class="underline">Except today</span>)<br>
-    <div class="inputDesc"><span>Server Time: </span>
-        <select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
-            <option value="7">West (UTC-8)</option>
-            <option value="-8">SEA (UTC+8)</option>
-            <option value="-8">East Asia (UTC+8)</option>
-            <option value="-9">KR (UTC+9)</option>
-        </select>
+                <div id="buttonContainer">
+                    <div class="button large" id="calcButton" onclick="calculate()">
+                        <p>Calculate</p>
+                    </div>
+                </div>
+            </section>
+    
+            <section id="results">
+                <ul>
+                    <li><strong>Calculations below do not include today.</strong></li>
+                    <li>Needed Points: <span id="needPoint">0</span></li>
+                    <li>Days with Daily Maximum Rewards: <span id="needDay">0</span></li>
+                    <li>Needed Points Per Day: <span id="needPointPerDay">0</span></li>
+                    <li class="display-none royal">Clear All Challenges + Days with Daily Maximum Rewards: <span id="needDay-clearWeekly">0</span>Days</li>
+                    <li class="display-none royal">Clear All Challenges + Needed Points Per Day: <span id="needPointPerDay-clearWeekly">0</span>Points</li>
+                    <li>Theoretically Maximum Level: <span id="possibleLevel">0</span></li>
+                    <li id="possibleOrNot">Possible to achieve your goal.</li>
+                </ul>
+            </section>
+    
+            <section id="facts">
+                <h2>Season Pass Basic Facts</h2>
+                <ul>
+                    <li>Daily Maximum Rewards <span>(completing daily quests)</span>: 375 Points</li>
+                    <li>Weekly Maximum Rewards: <span>(completing daily quests)</span>: 1,250 Points</li>
+                    <li>Challenge Rewards: 1,200 Points/Week</li>
+                </ul>
+            </section>
+    
+        </main>
+    
+        <footer class="body">
+            <div id="footer">
+                <abbr title="Credits:Language icon(id: language-icon)
+                By: Chanut is Industries (https://www.iconfinder.com/Chanut-is)
+                Font: https://icon-icons.com/pt/icone/idioma-tradutor/150921
+                License type: https://creativecommons.org/licenses/by/3.0/">                    
+                <img src="./resources/languageIcon.png" id="language-icon">&nbsp;
+                </abbr>
+                <select onchange='changeLang()' id='change-lang'>
+                    <option value="">Language</option>
+                    <option value="ko">한국어</option>
+                    <option value="en">English</option>
+                    <option value="cn">中文繁體</option>
+                    <option value="pt">Português</option>
+                    <option value="es">Español</option>
+                </select>
+            
+                <section id="pageNotes">
+                    <ul>
+                        <li>Developer email: alex00728@outlook.com</li>
+                        <li>Github Repo: <span class="link-effect"><a
+                                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
+                                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </footer>
     </div>
-    <div class="inputDesc"><span>Bought PremiumPass?</span><input type="checkbox" id="royalPass"
-            onchange="toggleWeeklyQuest(this)"></div>
-    <div class="inputDesc" id="weeklyQuest"><span>Cleared Challenge Week:</span> <input type="number"
-            id="clearedWeeklyQuest" maxlength="1" min="0" max="9" oninput="maxLengthCheck(this)">Weeks (0-9)</div>
-    <div class="inputDesc"><span>Your Pass Level:</span> <input type="number" id="nowLevel" maxlength="3" min="1"
-            max="999" oninput="maxLengthCheck(this)" value="1">Level</div>
-    <div class="inputDesc"><span>Points before next level:</span> <input type="number" id="remainPoint" maxlength="3"
-            min="0" max="100" oninput="maxLengthCheck(this)">Points</div>
-    <div class="inputDesc"><span>Target Level:</span> <input type="number" id="targetLevel" maxlength="3" min="1"
-            max="200" oninput="maxLengthCheck(this)">Level</div>
-    <div class="button large" id="calcButton" onclick="calculate()">Calculate</div>
-    <h4>Calculations below do not include today.</h4>
-    <div>Needed Points: <span id="needPoint">0</span>Points</div>
-    <div>Days with Daily Maximum Rewards: <span id="needDay">0</span>Days</div>
-    <div>Needed Points Per Day: <span id="needPointPerDay">0</span>Points</div>
-    <div class="display-none royal">Clear All Challenges + Days with Daily Maximum Rewards: <span
-            id="needDay-clearWeekly">0</span>Days</div>
-    <div class="display-none royal">Clear All Challenges + Needed Points Per Day: <span
-            id="needPointPerDay-clearWeekly">0</span>Points
-    </div>
-    <div class="bold red" id="possibleOrNot">Possible to achieve your goal.</div>
-    <div>Theoretically Maximum Level: <span id="possibleLevel">0</span>Level</div>
 
-    <h2>Season Pass Basic Facts</h2>
-    FreePass Daily Maximum Rewards: 180 Points<br>
-    PremiumPass Daily Maximum Rewards: 195 Points<br>
-    PremiumPass Challenge Rewards: 1130 Points/Week
+    <script>
+        initSeasonInformation();
+    </script>
 </body>
-<footer>
-    <p>
-        <img src="./resources/LanguageIcon-Big.jpg" id="language-icon">&nbsp;
-        <select onchange='changeLang()' id='change-lang'>
-            <option value="">Language</option>
-            <option value="ko">한국어</option>
-            <option value="en">English</option>
-            <option value="cn">中文繁體</option>
-            <option value="pt">Português</option>
-        </select>
-    </p>
-    <ul>
-        <li>developer email: alex00728@outlook.com</li>
-        <li>Github Repo: <span class="link-effect"><a
-                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
-                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
-        </li>
-    </ul>
-</footer>
-
-<script>
-    initSeasonInformation();
-</script>
 
 </html>
