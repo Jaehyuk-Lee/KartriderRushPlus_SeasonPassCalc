@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1, minimum-scale=1" />
+    <link rel="shortcut icon" type="image/jpg" href="./favicon.png" />
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <title>Calculadora de Pase Mensual - KartRider Rush+</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script>
+        const lang = 'es';
+    </script>
+    <script src="./util.js"></script>
+    <script src="./common.js"></script>
+</head>
+
+<body>
+    <div id="divMain">
+        <header class="body">
+            <img src="./resources/KartRiderRushLogo.png" id="KRRLogo" alt="Logo of KartRider Rush+">
+            <h1 id="mainTitle">Calculadora de Pase Mensual</h1>
+        </header>
+        
+        <main class="body">        
+            
+            <section id="passInfo">
+                <h2>Pase No. <span id="seasonNumber"></span></h2>
+                <div>
+                    <h3>Período de Pase</h3>
+                    <p><span id="passPeriod"></span></p>
+                </div>
+                <div>
+                    <h3>Tiempo restante</h3>
+                    <p><span id="remainDate"></span> Dias</b> (<span class="underline">Excepto hoy</span>)</p>
+                </div>
+            </section>
+    
+            <section id="theCalc">
+                
+                <table id="inputs">
+                    <tr>
+                        <td class="inputDesc">Tiempo de Servidor:</td>
+                        <td class="inputItem option"><select id="time-zone" onchange="javascript:refreshRemainingDates(this.value)">
+                            <option value="7">West (UTC-8)</option>
+                            <option value="-8">SEA (UTC+8)</option>
+                            <option value="-8">East Asia (UTC+8)</option>
+                            <option value="-9">KR (UTC+9)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">¿Compraste el Glory Pass?</td>
+                        <td class="inputItem checkbox"><input type="checkbox" id="royalPass" onchange="toggleWeeklyQuest(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Desafíos semanales completos:</td>
+                        <td class="inputItem number" id="weeklyQuest"><input type="number" id="clearedWeeklyQuest" maxlength="1" min="0" max="4" placeholder="0 al 4" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Su nível de Passe:</td>
+                        <td class="inputItem number"><input type="number" id="nowLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Puntos restantes para el siguiente nivel:</td>
+                        <td class="inputItem number"><input type="number" id="remainPoint" maxlength="3" min="0" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                    <tr>
+                        <td class="inputDesc">Nivel objetivo:</td>
+                        <td class="inputItem number"><input type="number" id="targetLevel" maxlength="3" min="1" max="100" oninput="maxLengthCheck(this)"></td>
+                    </tr>
+                </table>
+
+                <div id="buttonContainer">
+                    <div class="button large" id="calcButton" onclick="calculate()">
+                        <p>Calcular</p>
+                    </div>
+                </div>
+            </section>
+    
+            <section id="results">
+                <ul>
+                    <li><strong>Los cálculos abajo no incluyen hoy.</strong></li>
+                    <li>Puntos necesarios: <span id="needPoint">0</span></li>
+                    <li>Días con Máximo de Recompensas Diarias: <span id="needDay">0</span></li>
+                    <li>Puntos necesarios por día: <span id="needPointPerDay">0</span></li>
+                    <li class="display-none royal">Completar todos los desafíos y recompensas máximas diarias: <span id="needDay-clearWeekly">0</span> 5 días para completar</li>
+                    <li class="display-none royal">Completar todos los desafíos requerirá: <span id="needPointPerDay-clearWeekly">0</span> puntos por día</li>
+                    <li>Nivel Máximo (Teóricamente): <span id="possibleLevel">0</span></li>
+                    <li id="possibleOrNot">Es posible alcanzar tu meta.</li>
+                </ul>
+            </section>
+    
+            <section id="facts">
+                <h2>Conceptos Básicos del Pase</h2>
+                <ul>
+                    <li>Recompensa diaria máxima <span>(completando misiones diarias)</span>: 375 Puntos</li>
+                    <li>Recompensa semanal máxima <span>(completando misiones diarias)</span>: 1.250 Puntos</li>
+                    <li>Recompensa de desafíos: 1.200 Puntos/Semana</li>
+                </ul>
+            </section>
+    
+        </main>
+    
+        <footer class="body">
+            <div id="footer">
+                <abbr title="Credits:Language icon(id: language-icon)
+                By: Chanut is Industries (https://www.iconfinder.com/Chanut-is)
+                Font: https://icon-icons.com/pt/icone/idioma-tradutor/150921
+                License type: https://creativecommons.org/licenses/by/3.0/">                    
+                <img src="./resources/languageIcon.png" id="language-icon">&nbsp;
+                </abbr>
+                <select onchange='changeLang()' id='change-lang'>
+                    <option value="">Language</option>
+                    <option value="ko">한국어</option>
+                    <option value="en">English</option>
+                    <option value="cn">中文繁體</option>
+                    <option value="pt">Português</option>
+                    <option value="es">Español</option>
+                </select>
+            
+                <section id="pageNotes">
+                    <ul>
+                        <li>Traducción: <span class="link-effect"><a
+                                    href="https://euna.bio/ArthurOliveiraSou"
+                                    target="_blank">Arthur Oliveira</a></span>
+                        <li>Email del desarrollador: alex00728@outlook.com<br>
+                            (No entiendo español, English Please.)</li>
+                        <li>Repositorio en GitHub: <span class="link-effect"><a
+                                    href="https://github.com/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc"
+                                    target="_blank">/Jaehyuk-Lee/KartriderRushPlus_SeasonPassCalc</a></span>
+                        </li>
+                    </ul>
+                </section>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        initSeasonInformation();
+    </script>
+</body>
+
+</html>
